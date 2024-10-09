@@ -1,0 +1,30 @@
+package de.propadmin.rental_manager.models;
+
+import org.hibernate.mapping.List;
+import org.springframework.data.annotation.Id;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
+@Entity
+public class CraftsmanFirm {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String companyName;
+    private String contactDetails; // Could be email, phone, or address
+
+    @ManyToOne
+    @JoinColumn(name = "landlord_id")
+    private Landlord landlord;
+
+    @OneToMany(mappedBy = "craftsmanFirm")
+    private List<Ticket> tickets;
+
+    // Getters and Setters
+}
