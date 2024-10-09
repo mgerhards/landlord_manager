@@ -1,5 +1,7 @@
 package de.propadmin.rental_manager.models;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 
 import jakarta.persistence.Entity;
@@ -7,8 +9,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter @Setter
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +38,4 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "craftsman_firm_id", nullable = true)
     private CraftsmanFirm craftsmanFirm;  // Can be null if unassigned
-
-    // Getters and Setters
 }

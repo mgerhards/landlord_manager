@@ -1,6 +1,7 @@
 package de.propadmin.rental_manager.models;
 
-import org.hibernate.mapping.List;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 
 import jakarta.persistence.Entity;
@@ -9,8 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter @Setter
 public class CraftsmanFirm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +29,4 @@ public class CraftsmanFirm {
 
     @OneToMany(mappedBy = "craftsmanFirm")
     private List<Ticket> tickets;
-
-    // Getters and Setters
 }
