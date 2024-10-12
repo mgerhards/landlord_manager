@@ -1,4 +1,4 @@
-package de.propadmin.rental_manager.controller.rest;
+package de.propadmin.rentalmanager.controller.rest;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.propadmin.rental_manager.models.CraftsmanFirm;
-import de.propadmin.rental_manager.service.CraftsmanFirmService;
+import de.propadmin.rentalmanager.models.CraftsmanFirm;
+import de.propadmin.rentalmanager.service.CraftsmanFirmService;
 
 @RestController
 @RequestMapping("/craftsman-firms")

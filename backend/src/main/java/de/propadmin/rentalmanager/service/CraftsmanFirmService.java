@@ -1,12 +1,12 @@
-package de.propadmin.rental_manager.service;
+package de.propadmin.rentalmanager.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.propadmin.rental_manager.models.CraftsmanFirm;
-import de.propadmin.rental_manager.repositories.CraftsmanFirmRepository;
+import de.propadmin.rentalmanager.models.CraftsmanFirm;
+import de.propadmin.rentalmanager.repositories.CraftsmanFirmRepository;
 
 @Service
 public class CraftsmanFirmService {

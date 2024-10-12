@@ -1,4 +1,4 @@
-package de.propadmin.rental_manager.service;
+package de.propadmin.rentalmanager.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.propadmin.rental_manager.models.Landlord;
-import de.propadmin.rental_manager.repositories.LandlordRepository;
+import de.propadmin.rentalmanager.models.Landlord;
+import de.propadmin.rentalmanager.repositories.LandlordRepository;
 
 @Service
 public class LandlordService {

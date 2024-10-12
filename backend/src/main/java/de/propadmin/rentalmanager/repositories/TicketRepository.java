@@ -1,11 +1,11 @@
-package de.propadmin.rental_manager.repositories;
+package de.propadmin.rentalmanager.repositories;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import de.propadmin.rental_manager.models.Ticket;
+import de.propadmin.rentalmanager.models.Ticket;
 
 
 @Repository

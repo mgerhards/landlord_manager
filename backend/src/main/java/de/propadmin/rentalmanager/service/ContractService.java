@@ -1,12 +1,12 @@
-package de.propadmin.rental_manager.service;
+package de.propadmin.rentalmanager.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.propadmin.rental_manager.models.Contract;
-import de.propadmin.rental_manager.repositories.ContractRepository;
+import de.propadmin.rentalmanager.models.Contract;
+import de.propadmin.rentalmanager.repositories.ContractRepository;
 
 @Service
 public class ContractService {

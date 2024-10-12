@@ -1,4 +1,4 @@
-package de.propadmin.rental_manager.models;
+package de.propadmin.rentalmanager.models;
 
 import java.util.List;
 

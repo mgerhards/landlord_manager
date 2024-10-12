@@ -1,12 +1,12 @@
-package de.propadmin.rental_manager.service;
+package de.propadmin.rentalmanager.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.propadmin.rental_manager.models.RealEstateObject;
-import de.propadmin.rental_manager.repositories.RealEstateObjectRepository;
+import de.propadmin.rentalmanager.models.RealEstateObject;
+import de.propadmin.rentalmanager.repositories.RealEstateObjectRepository;
 @Service
 public class RealEstateObjectService {
 

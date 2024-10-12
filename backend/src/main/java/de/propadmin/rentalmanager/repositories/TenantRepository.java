@@ -1,11 +1,11 @@
-package de.propadmin.rental_manager.repositories;
+package de.propadmin.rentalmanager.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import de.propadmin.rental_manager.models.Landlord;
+import de.propadmin.rentalmanager.models.Tenant;
 
 @Repository
-public interface LandlordRepository extends JpaRepository<Landlord, Long> {
+public interface TenantRepository extends JpaRepository<Tenant, Long> {
     // Additional custom queries can be defined here if needed
 }

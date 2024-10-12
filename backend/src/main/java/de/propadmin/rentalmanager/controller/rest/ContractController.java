@@ -1,4 +1,4 @@
-package de.propadmin.rental_manager.controller.rest;
+package de.propadmin.rentalmanager.controller.rest;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.propadmin.rental_manager.models.Contract;
-import de.propadmin.rental_manager.service.ContractService;
+import de.propadmin.rentalmanager.models.Contract;
+import de.propadmin.rentalmanager.service.ContractService;
 
 @RestController
 @RequestMapping("/contracts")

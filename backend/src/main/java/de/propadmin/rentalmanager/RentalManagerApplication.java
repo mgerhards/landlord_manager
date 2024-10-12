@@ -1,4 +1,4 @@
-package de.propadmin.rental_manager;
+package de.propadmin.rentalmanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package de.propadmin.rental_manager.models;
+package de.propadmin.rentalmanager.models;
 
 import java.util.List;
 
@@ -14,25 +14,18 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class RealEstateObject {
+public class CraftsmanFirm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String address;
-    private double size;  // In square meters
-    private int numberOfRooms;
-    private String description;
+    private String companyName;
+    private String contactDetails; // Could be email, phone, or address
 
     @ManyToOne
     @JoinColumn(name = "landlord_id")
     private Landlord landlord;
 
-    @OneToMany(mappedBy = "asset")
-    private List<Contract> contracts;
-
-    @OneToMany(mappedBy = "asset")
+    @OneToMany(mappedBy = "craftsmanFirm")
     private List<Ticket> tickets;
-
-    // Getters and Setters
 }

@@ -1,6 +1,7 @@
-package de.propadmin.rental_manager.models;
+package de.propadmin.rentalmanager.models;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,24 +9,32 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class CraftsmanFirm {
+public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String companyName;
-    private String contactDetails; // Could be email, phone, or address
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private BigDecimal monthlyRent;
 
     @ManyToOne
     @JoinColumn(name = "landlord_id")
     private Landlord landlord;
 
-    @OneToMany(mappedBy = "craftsmanFirm")
-    private List<Ticket> tickets;
+    @ManyToOne
+    @JoinColumn(name = "tenant_id")
+    private Tenant tenant;
+
+    @ManyToOne
+    @JoinColumn(name = "asset_id")
+    private RealEstateObject asset;
+
+    // Getters and Setters
 }
+
