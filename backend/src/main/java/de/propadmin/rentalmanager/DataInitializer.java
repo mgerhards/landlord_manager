@@ -19,6 +19,7 @@ import de.propadmin.rentalmanager.service.TicketService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -87,7 +88,7 @@ public class DataInitializer implements CommandLineRunner {
         Ticket ticket1 = new Ticket();
         ticket1.setDescription("Water leak in the kitchen");
         ticket1.setStatus("OPEN");
-        ticket1.setCreationDate(LocalDate.now());
+        ticket1.setCreationDate(LocalDateTime.now());
         ticket1.setTenant(tenant1);
         ticket1.setLandlord(landlord1);
         ticket1.setAsset(realEstateObject1);
