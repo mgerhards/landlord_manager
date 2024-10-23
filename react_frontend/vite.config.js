@@ -12,6 +12,7 @@ export default defineConfig({
       '@adminlte-css': resolve(__dirname, 'node_modules/admin-lte/dist/css/adminlte.min.css'),
       '@bootstrap-js': resolve(__dirname, 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'),
       '@adminlte-js': resolve(__dirname, 'node_modules/admin-lte/dist/js/adminlte.min.js'),
+      '@node_modules': resolve(__dirname, 'node_modules'),
     }
   }
 })
