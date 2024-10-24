@@ -5,14 +5,6 @@ import './index.css'
 
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-// Import CSS files
-import '@bootstrap-css'
-import '@fontawesome-css'
-import '@adminlte-css'
-
-// Import JS files
-import '@bootstrap-js'
-import '@adminlte-js'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />

@@ -1,19 +1,13 @@
 import React from 'react';
-
-// Import CSS files
-import '@bootstrap-css'
-import '@fontawesome-css'
-import '@adminlte-css'
-
-// Import JS files
-import '@bootstrap-js'
-import '@adminlte-js'
-
+import { useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import "./App.css"
 
 const App = () => {
- 
+  useEffect(() => {
+    // Initialize AdminLTE components if necessary
+    import('admin-lte');
+  }, []);
 
   return (
     <div className="app-wrapper sidebar-expand-lg bg-body-tertiary sidebar-open">
@@ -28,8 +22,8 @@ const App = () => {
           </ul>
           <ul className='navbar-nav ms-auto'>
             <li className="nav-item dropdown user-menu">
-              <img src="@node_modules/admin-lte/dist/assets/img/user2-160x160.jpg" class="user-image rounded-circle shadow" alt="User Image" data-astro-source-file="C:/Users/gerha/workspace/AdminLTE/src/html/components/dashboard/_topbar.astro" data-astro-source-loc="169:12" />
-              <span class="d-none d-md-inline" data-astro-source-file="C:/Users/gerha/workspace/AdminLTE/src/html/components/dashboard/_topbar.astro" data-astro-source-loc="174:44">Alexander Pierce</span>
+              <img src="/user2-160x160.jpg" className="user-image rounded-circle shadow" alt="User Image" data-astro-source-file="C:/Users/gerha/workspace/AdminLTE/src/html/components/dashboard/_topbar.astro" data-astro-source-loc="169:12" />
+              <span className="d-none d-md-inline" data-astro-source-file="C:/Users/gerha/workspace/AdminLTE/src/html/components/dashboard/_topbar.astro" data-astro-source-loc="174:44">Alexander Pierce</span>
              </li>
           </ul>
         </div>
