@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
@@ -15,10 +16,21 @@ const Sidebar = () => {
                             <ul className="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                                 <li className="nav-item menu-open"> <a href="#" className="nav-link active"> <i className="nav-icon bi bi-speedometer"></i>
                                         <p>
-                                            Dashboard
+                                            Stammdaten
                                             <i className="nav-arrow bi bi-chevron-right"></i>
+                                           
                                         </p>
                                     </a>
+                                    <ul className="nav nav-treeview">
+                                              <li className="nav-item">
+                                              <Link to="/immobilien" className="nav-link">
+                                                  <i class="nav-icon bi bi-buildings-fill"></i>
+                                                  <p>
+                                                    Immobilien
+                                                  </p>
+                                                </Link>
+                                              </li>
+                                            </ul>
                                 </li>
                             </ul>
               </nav>
