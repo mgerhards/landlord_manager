@@ -19,12 +19,12 @@ public class WebSecurityConfig {
         http
         .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity (not recommended for production)
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/", "/home", "/login", "/error").permitAll() // Ensure login and home pages are accessible
+            .requestMatchers("/", "/login", "/error").permitAll() // Ensure login and home pages are accessible
             .anyRequest().authenticated() // All other pages require authentication
         )
         .formLogin(form -> form
             .loginPage("/login") // Custom login page
-            .defaultSuccessUrl("/home", true) // Redirect to home page after successful login
+            .defaultSuccessUrl("/", true) // Redirect to home page after successful login
             .permitAll()
         )
         .logout(logout -> logout
