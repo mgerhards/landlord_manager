@@ -24,7 +24,7 @@ const Sidebar = () => {
                                     <ul className="nav nav-treeview">
                                               <li className="nav-item">
                                               <Link to="/immobilien" className="nav-link">
-                                                  <i class="nav-icon bi bi-buildings-fill"></i>
+                                                  <i className="nav-icon bi bi-buildings-fill"></i>
                                                   <p>
                                                     Immobilien
                                                   </p>

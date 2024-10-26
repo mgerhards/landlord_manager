@@ -4,10 +4,10 @@ import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import "./App.css"
 import { Routes, Route } from 'react-router-dom';
+import RealEstateOverview  from './components/RealEstate/Overview.jsx';
 
+const Home = () => <h3>Home</h3>;
 
-const Home = () => <h1>Home</h1>;
-const Immobilien = () => <h1>Immobilien</h1>;
 
 const App = () => {
   useEffect(() => {
@@ -22,7 +22,7 @@ const App = () => {
       <div className="content-wrapper">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/immobilien" element={<Immobilien />} />
+          <Route path="/immobilien" element={<RealEstateOverview />} />
         </Routes>
       </div>
     </div>
