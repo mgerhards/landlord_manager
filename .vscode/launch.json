@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RentalManagerApplication<rental-manager>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "de.propadmin.rentalmanager.RentalManagerApplication",
+            "projectName": "rental-manager",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
