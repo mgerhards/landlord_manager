@@ -2,6 +2,8 @@ package de.propadmin.rentalmanager.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,15 +24,19 @@ public class Landlord {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "landlord")
+    @JsonManagedReference
     private List<RealEstateObject> realEstateObjects;
 
     @OneToMany(mappedBy = "landlord")
+    @JsonManagedReference
     private List<Contract> contracts;
 
     @OneToMany(mappedBy = "landlord")
+    @JsonManagedReference
     private List<Ticket> tickets;
 
     @OneToMany(mappedBy = "landlord")
+    @JsonManagedReference
     private List<CraftsmanFirm> craftsmanFirms;
 
     // Getters and Setters

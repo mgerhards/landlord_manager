@@ -3,6 +3,8 @@ package de.propadmin.rentalmanager.models;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,14 +27,17 @@ public class Contract {
 
     @ManyToOne
     @JoinColumn(name = "landlord_id")
+    @JsonBackReference
     private Landlord landlord;
 
     @ManyToOne
     @JoinColumn(name = "tenant_id")
+    @JsonBackReference
     private Tenant tenant;
 
     @ManyToOne
     @JoinColumn(name = "asset_id")
+    @JsonBackReference
     private RealEstateObject asset;
 
     // Getters and Setters

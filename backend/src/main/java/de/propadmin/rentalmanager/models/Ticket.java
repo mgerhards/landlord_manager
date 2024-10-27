@@ -2,6 +2,8 @@ package de.propadmin.rentalmanager.models;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,17 +26,21 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "tenant_id")
+    @JsonBackReference
     private Tenant tenant;
 
     @ManyToOne
     @JoinColumn(name = "landlord_id")
+    @JsonBackReference
     private Landlord landlord;
 
     @ManyToOne
     @JoinColumn(name = "asset_id")
+    @JsonBackReference
     private RealEstateObject asset;
 
     @ManyToOne
     @JoinColumn(name = "craftsman_firm_id", nullable = true)
+    @JsonBackReference
     private CraftsmanFirm craftsmanFirm;  // Can be null if unassigned
 }
