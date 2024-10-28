@@ -19,7 +19,7 @@ public class WebSecurityConfig {
         http
         .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity (not recommended for production)
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/", "/login", "/error").permitAll() // Ensure login and home pages are accessible
+            .requestMatchers("/", "/login", "/h2-console/**", "/error").permitAll() // Ensure login and home pages are accessible
             .anyRequest().authenticated() // All other pages require authentication
         )
         .formLogin(form -> form
@@ -31,7 +31,8 @@ public class WebSecurityConfig {
             .logoutUrl("/logout") // URL for logout
             .logoutSuccessUrl("/login?logout") // Redirect to login page after logout
             .permitAll()
-        );
+        ) 
+        .headers(headers -> headers.frameOptions().sameOrigin()); ;
         return http.build();
     }
 
