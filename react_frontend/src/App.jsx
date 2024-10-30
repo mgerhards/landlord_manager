@@ -1,15 +1,22 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import "./App.css"
 import { Routes, Route } from 'react-router-dom';
 import RealEstateOverview  from './components/RealEstate/Overview.jsx';
+import Login from './Login';
+
 
 const Home = () => <h3>Home</h3>;
 
 
 const App = () => {
+  const [token, setToken] = useState(null);
+  if (!token) {
+    return <Login setToken={setToken} />;
+  }
+
   useEffect(() => {
     // Initialize AdminLTE components if necessary
     import('admin-lte');
