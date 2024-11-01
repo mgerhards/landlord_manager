@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -12,15 +11,15 @@ const Home = () => <h3>Home</h3>;
 
 
 const App = () => {
-  const [token, setToken] = useState(null);
-  if (!token) {
-    return <Login setToken={setToken} />;
-  }
-
   useEffect(() => {
     // Initialize AdminLTE components if necessary
     import('admin-lte');
   }, []);
+
+  const [token, setToken] = useState(null);
+  if (!token) {
+    return <Login setToken={setToken} />;
+  }
 
   return (
     <div className="app-wrapper sidebar-expand-lg bg-body-tertiary sidebar-open">
