@@ -28,18 +28,32 @@ const Login = ({ setToken }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
-                <label>Username:</label>
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <div className="login-wrapper container d-flex justify-content-center align-items-center vh-100">
+            
+                <div className='card card-primary card-outline mb-4 w-50'>
+                    <div className='card-header'>
+                        <h3 className='card-title'>Login</h3>
+                    </div>
+                    <div className='card-body'>
+                        <div>
+                            <label className="form-label">Username:</label>
+                            <input className="form-control" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                        </div>
+                        <div>
+                            <label className="form-label">Password:</label>
+                            <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </div>
+                    </div>
+                    <div className='card-footer'>
+                        <button className="btn btn-primary" type="submit">Login</button>
+                    </div>
+                </div>
             </div>
-            <div>
-                <label>Password:</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </div>
-            <button type="submit">Login</button>
         </form>
+        
     );
 };
+
 Login.propTypes = {
     setToken: PropTypes.func.isRequired,
 };

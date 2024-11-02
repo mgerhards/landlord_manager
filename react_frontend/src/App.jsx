@@ -18,7 +18,13 @@ const App = () => {
 
   const [token, setToken] = useState(null);
   if (!token) {
-    return <Login setToken={setToken} />;
+    return (
+      <div className="app-wrapper sidebar-expand-lg bg-body-tertiary sidebar-open">
+        <Sidebar />
+        <div className="content-wrapper">
+          <Login setToken={setToken} />
+        </div>
+      </div>);
   }
 
   return (
