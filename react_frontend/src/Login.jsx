@@ -12,6 +12,7 @@ const Login = ({ setToken }) => {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
+            credentials: 'include', // Include credentials to handle cookies
             body: new URLSearchParams({
                 username,
                 password,
@@ -19,8 +20,7 @@ const Login = ({ setToken }) => {
         });
 
         if (response.ok) {
-            const token = response.headers.get('Authorization');
-            setToken(token);
+            setToken("authenticated");
         } else {
             console.error('Login failed');
         }
