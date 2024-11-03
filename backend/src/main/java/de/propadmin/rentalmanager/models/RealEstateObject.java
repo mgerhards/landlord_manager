@@ -40,5 +40,8 @@ public class RealEstateObject {
     @JsonManagedReference
     private List<Ticket> tickets;
 
+    private double latitude;
+    private double longitude;
+
     // Getters and Setters
 }
