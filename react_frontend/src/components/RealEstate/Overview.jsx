@@ -23,7 +23,7 @@ const RealEstateOverview = () => {
             <div className="row">
                 {realEstateObjects.map((obj) => {
                     return (
-                        <div className="col-md-6 mb-4" key={obj.id}>
+                        <div className="col-md-4 mb-4" key={obj.id}>
                             <div className="card">
                                 <div className="card-body">
                                     <iframe

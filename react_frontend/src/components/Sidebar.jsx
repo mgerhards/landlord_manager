@@ -13,26 +13,41 @@ const Sidebar = () => {
      
             <div className="sidebar-wrapper app-sidebar bg-body-secondary shadow" data-overlayscrollbars="host">
               <nav className="mt-2"> 
-                            <ul className="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                                <li className="nav-item menu-open"> <a href="#" className="nav-link active"> <i className="nav-icon bi bi-speedometer"></i>
-                                        <p>
-                                            Stammdaten
-                                            <i className="nav-arrow bi bi-chevron-right"></i>
-                                           
-                                        </p>
-                                    </a>
-                                    <ul className="nav nav-treeview">
-                                              <li className="nav-item">
-                                              <Link to="/immobilien" className="nav-link">
-                                                  <i className="nav-icon bi bi-buildings-fill"></i>
-                                                  <p>
-                                                    Immobilien
-                                                  </p>
-                                                </Link>
-                                              </li>
-                                            </ul>
-                                </li>
-                            </ul>
+                  <ul className="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                      
+                        <li className="nav-item">
+                        <Link to="/immobilien" className="nav-link">
+                            <i className="nav-icon bi bi-buildings-fill"></i>
+                            <p>
+                              Immobilien
+                            </p>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                        <Link to="/mieter" className="nav-link">
+                            <i className="nav-icon bi bi-people-fill"></i>
+                            <p>
+                              Mieter
+                            </p>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                        <Link to="/firmen" className="nav-link">
+                            <i className="nav-icon bi bi-tools"></i>
+                            <p>
+                              Firmen
+                            </p>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                        <Link to="/tickets" className="nav-link">
+                            <i className="nav-icon bi bi-ticket-fill"></i>
+                            <p>
+                              Tickets
+                            </p>
+                          </Link>
+                        </li>
+                      </ul>
               </nav>
             </div>
       </aside>
