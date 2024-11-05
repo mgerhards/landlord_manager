@@ -1,20 +1,21 @@
 // src/components/Dashboard.jsx
 
 import React, { useState, useEffect } from 'react';
+import { ENDPOINTS } from '../../config/api';
 
 const RealEstateOverview = () => {
     const [realEstateObjects, setRealEstateObjects] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/realEstateObjects',{
-                credentials: 'include',  // Add this line to send cookies
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => setRealEstateObjects(data._embedded.realEstateObjects))
-            .catch(error => console.error('Error fetching data:', error));
+        fetch(ENDPOINTS.REAL_ESTATE, {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => setRealEstateObjects(data._embedded.realEstateObjects))
+        .catch(error => console.error('Error fetching data:', error));
     }, []);
 
     return (

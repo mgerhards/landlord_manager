@@ -4,6 +4,9 @@ import Header from './components/Header';
 import "./App.css"
 import { Routes, Route } from 'react-router-dom';
 import RealEstateOverview  from './components/RealEstate/Overview.jsx';
+import TennantsOverview from './components/tennants/Overview';
+import CompaniesOverview from './components/companies/Overview';
+import TicketsOverview from './components/tickets/Overview';
 import Login from './Login';
 
 
@@ -35,6 +38,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/immobilien" element={<RealEstateOverview />} />
+          <Route path="/tennants" element={<TennantsOverview />} />
+          <Route path="/companies" element={<CompaniesOverview />} />
+          <Route path="/tickets" element={<TicketsOverview />} />
         </Routes>
       </div>
     </div>
