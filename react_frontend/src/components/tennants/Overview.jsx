@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { ENDPOINTS } from '../../config/api';
 
 const TennantsOverview = () => {
     const [tennants, setTennants] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/tennants', {
+        fetch(ENDPOINTS.TENNANTS, {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json'
             }
         })
         .then(response => response.json())
-        .then(data => setTennants(data._embedded.tennants))
+        .then(data => setTennants(data._embedded.tenants))
         .catch(error => console.error('Error fetching tennants:', error));
     }, []);
 
