@@ -11,6 +11,8 @@ import de.propadmin.rentalmanager.models.Landlord;
 import de.propadmin.rentalmanager.models.RealEstateObject;
 import de.propadmin.rentalmanager.models.Tenant;
 import de.propadmin.rentalmanager.models.Ticket;
+import de.propadmin.rentalmanager.models.enums.HeatingType;
+import de.propadmin.rentalmanager.models.enums.PropertyType;
 import de.propadmin.rentalmanager.service.ContractService;
 import de.propadmin.rentalmanager.service.CraftsmanFirmService;
 import de.propadmin.rentalmanager.service.LandlordService;
@@ -76,6 +78,14 @@ public class DataInitializer implements CommandLineRunner {
         realEstateObject1.setNumberOfRooms(3);
         realEstateObject1.setDescription("Beautiful 3-room apartment, 3.OG li");
         realEstateObject1.setLandlord(landlord1);
+        realEstateObject1.setHeatingType(HeatingType.ZENTRALHEIZUNG);
+        realEstateObject1.setPropertyType(PropertyType.APARTMENT);
+        realEstateObject1.setYearBuilt(1985);
+        realEstateObject1.setFloor(3);
+        realEstateObject1.setHasBalcony(true);
+        realEstateObject1.setHasElevator(false);
+        realEstateObject1.setHasGarden(false);
+        
         // Set latitude and longitude
         realEstateObject1.setLatitude(50.9385);
         realEstateObject1.setLongitude(6.9592);
@@ -93,6 +103,14 @@ public class DataInitializer implements CommandLineRunner {
         realEstateObject2.setNumberOfRooms(3);
         realEstateObject2.setDescription("Beautiful 4-room apartment, 1.OG re");
         realEstateObject2.setLandlord(landlord1);
+        realEstateObject2.setHeatingType(HeatingType.ETAGENHEIZUNG);
+        realEstateObject2.setPropertyType(PropertyType.APARTMENT);
+        realEstateObject2.setYearBuilt(1985);
+        realEstateObject2.setFloor(1);
+        realEstateObject2.setHasBalcony(true);
+        realEstateObject2.setHasElevator(false);
+        realEstateObject2.setHasGarden(false);
+        
         // Set latitude and longitude
         realEstateObject2.setLatitude(50.9385);
         realEstateObject2.setLongitude(6.9592);
