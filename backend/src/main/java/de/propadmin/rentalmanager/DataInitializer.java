@@ -24,6 +24,7 @@ import de.propadmin.rentalmanager.utils.GeocodeUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.math.BigDecimal;
 
 
@@ -127,6 +128,20 @@ public class DataInitializer implements CommandLineRunner {
         tenant1.setName("Jane Smith");
         tenant1.setEmail("jane.smith@example.com");
         tenant1.setPhoneNumber("555-6789");
+        tenant1.setDateOfBirth(LocalDate.of(1985, 6, 15));
+        tenant1.setIdNumber("ID123456789");
+        tenant1.setOccupation("Software Engineer");
+        tenant1.setEmployerName("Tech Corp");
+        tenant1.setEmployerContact("employer@techcorp.com");
+        tenant1.setAlternativePhoneNumber("555-9876");
+        tenant1.setWorkPhoneNumber("555-4321");
+        tenant1.setEmergencyContactName("John Smith");
+        tenant1.setEmergencyContactPhone("555-1234");
+        tenant1.setBankAccountHolder("Jane Smith");
+        tenant1.setIban("DE89 3704 0044 0532 0130 00");
+        tenant1.setBic("COBADEFFXXX");
+        tenant1.setNumberOfOccupants(2);
+        tenant1.setMoveInDate(LocalDate.of(2023, 1, 1));
         tenantService.createTenant(tenant1);
 
         // Create a contract
@@ -135,7 +150,7 @@ public class DataInitializer implements CommandLineRunner {
         contract1.setEndDate(LocalDate.of(2024, 1, 1));
         contract1.setMonthlyRent(BigDecimal.valueOf(1200));
         contract1.setLandlord(landlord1);
-        contract1.setTenant(tenant1);
+        contract1.setTenants(Arrays.asList(tenant1));
         contract1.setAsset(realEstateObject1);
         contractService.createContract(contract1);
 
