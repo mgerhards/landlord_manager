@@ -1,10 +1,13 @@
 package de.propadmin.rentalmanager.models;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import de.propadmin.rentalmanager.models.enums.PropertyType;
+import de.propadmin.rentalmanager.models.enums.HeatingType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,6 +45,32 @@ public class RealEstateObject {
 
     private double latitude;
     private double longitude;
+
+    // Basic Property Details
+    private PropertyType propertyType;
+
+    private int yearBuilt;
+    private int floor;  // for apartments
+    private boolean hasElevator;
+    
+    // Financial Details
+    private double monthlyMaintenanceCosts;  // regular maintenance fees
+    private double propertyTax;
+    
+    // Utilities & Energy
+    private HeatingType heatingType;
+    private boolean hasAirConditioning;
+    
+    // Amenities
+    private boolean hasCellar;
+    private boolean hasBalcony;
+    private boolean hasGarden;
+    private double outdoorSpace;  // in square meters
+    private boolean isFurnished;
+    
+    // Maintenance
+    private LocalDate lastRenovationDate;
+    private LocalDate nextInspectionDue;
 
     // Getters and Setters
 }
