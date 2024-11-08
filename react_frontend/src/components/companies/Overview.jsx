@@ -7,7 +7,13 @@ const CompaniesOverview = () => {
     useEffect(() => {
         fetch(ENDPOINTS.COMPANIES, {
             credentials: 'include',
-        });
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => setCompanies(data._embedded.craftsmanFirms))
+        .catch(error => console.error('Error fetching tennants:', error));;
     });     
 
     return (
@@ -26,7 +32,9 @@ const CompaniesOverview = () => {
                     <tbody>
                         {companies.map((company) => (
                             <tr key={company.id}>
-                                <td>{company.name}</td>
+                                <td>{company.companyName}</td>
+                                <td>{company.contactDetails}</td>
+                                
                             </tr>
                         ))}
                     </tbody>

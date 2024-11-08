@@ -5,7 +5,7 @@ export const API_BASE_URL =  'http://localhost:8080';//import.meta.env.VITE_API_
 export const ENDPOINTS = {
     REAL_ESTATE: `${API_BASE_URL}/realEstateObject`,
     TENNANTS: `${API_BASE_URL}/tenants`,
-    COMPANIES: `${API_BASE_URL}/craftmanFirm`,
+    COMPANIES: `${API_BASE_URL}/craftsmanFirm`,
     TICKETS: `${API_BASE_URL}/ticket`,
     // Add other endpoints here as needed
 }; 

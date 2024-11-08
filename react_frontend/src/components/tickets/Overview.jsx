@@ -10,7 +10,10 @@ const TicketsOverview = () => {
             headers: {
                 'Accept': 'application/json'
             }
-        });
+        })        
+        .then(response => response.json())
+        .then(data => setTickets(data._embedded.tickets))
+        .catch(error => console.error('Error fetching tickets:', error));;;
     }); 
 
     return (
@@ -21,6 +24,7 @@ const TicketsOverview = () => {
                     <thead>
                         <tr>
                             <th>Ticket ID</th>
+                            <th>Description</th>
                             <th>Status</th>
                             <th>Created At</th>
                         </tr>
@@ -29,6 +33,7 @@ const TicketsOverview = () => {
                         {tickets.map((ticket) => (
                             <tr key={ticket.id}>
                                 <td>{ticket.id}</td>
+                                <td>{ticket.description}</td>
                                 <td>{ticket.status}</td>
                                 <td>{ticket.createdAt}</td>
                             </tr>
