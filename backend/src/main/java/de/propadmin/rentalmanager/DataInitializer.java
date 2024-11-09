@@ -13,6 +13,7 @@ import de.propadmin.rentalmanager.models.Tenant;
 import de.propadmin.rentalmanager.models.Ticket;
 import de.propadmin.rentalmanager.models.enums.HeatingType;
 import de.propadmin.rentalmanager.models.enums.PropertyType;
+import de.propadmin.rentalmanager.models.enums.TradeType;
 import de.propadmin.rentalmanager.service.ContractService;
 import de.propadmin.rentalmanager.service.CraftsmanFirmService;
 import de.propadmin.rentalmanager.service.LandlordService;
@@ -25,6 +26,7 @@ import de.propadmin.rentalmanager.utils.GeocodeUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Set;
 import java.math.BigDecimal;
 
 
@@ -158,6 +160,56 @@ public class DataInitializer implements CommandLineRunner {
         CraftsmanFirm craftsmanFirm1 = new CraftsmanFirm();
         craftsmanFirm1.setCompanyName("FixIt Ltd.");
         craftsmanFirm1.setContactDetails("fixit@example.com, 555-4321");
+        craftsmanFirm1.setVatNumber("DE123456789");
+        craftsmanFirm1.setRegistrationNumber("HRB 12345");
+        
+        // Address
+        craftsmanFirm1.setStreet("Handwerkerstraße");
+        craftsmanFirm1.setHouseNumber("42");
+        craftsmanFirm1.setPostalCode("50667");
+        craftsmanFirm1.setCity("Köln");
+        craftsmanFirm1.setCountry("Germany");
+        
+        // Business Details
+        craftsmanFirm1.setTrades(Set.of(TradeType.PLUMBING, TradeType.HEATING));
+        craftsmanFirm1.setIsEmergencyServiceProvider(true);
+        craftsmanFirm1.setEmergencyPhone("0800-24/7-FIXIT");
+        craftsmanFirm1.setAvailabilityHours("{'Mon-Fri': '8:00-18:00', 'Sat': '9:00-14:00'}");
+        craftsmanFirm1.setAcceptedPaymentMethods(Set.of("BANK_TRANSFER", "CREDIT_CARD"));
+        craftsmanFirm1.setStandardHourlyRate(new BigDecimal("85.00"));
+        craftsmanFirm1.setEmergencyHourlyRate(new BigDecimal("150.00"));
+        craftsmanFirm1.setTravelCostPerKm(new BigDecimal("0.50"));
+        craftsmanFirm1.setStandardWarrantyMonths(24);
+        
+        // Service Area
+        craftsmanFirm1.setServicePostalCodes(Set.of("50667", "50668", "50669", "50670"));
+        craftsmanFirm1.setMaxTravelRadiusKm(50);
+        
+        // Financial Information
+        craftsmanFirm1.setIban("DE89 3704 0044 0532 0130 00");
+        craftsmanFirm1.setBic("COBADEFFXXX");
+        craftsmanFirm1.setBankName("Commerzbank");
+        craftsmanFirm1.setAccountHolder("FixIt Ltd.");
+        
+        // Performance Metrics
+        craftsmanFirm1.setAverageRating(4.8);
+        craftsmanFirm1.setCompletedJobsCount(256);
+        craftsmanFirm1.setCancelledJobsCount(3);
+        craftsmanFirm1.setEmergencyResponseTimeMinutes(45);
+        
+        // Relationship Management
+        craftsmanFirm1.setLastJobDate(LocalDateTime.now().minusDays(5));
+        craftsmanFirm1.setContractedSince(LocalDateTime.now().minusYears(2));
+        craftsmanFirm1.setIsPreferredPartner(true);
+        craftsmanFirm1.setFrameworkContractNumber("FC-2021-123");
+        craftsmanFirm1.setNegotiatedDiscount(new BigDecimal("10.00"));
+        
+        // Audit Fields
+        craftsmanFirm1.setCreatedAt(LocalDateTime.now());
+        craftsmanFirm1.setUpdatedAt(LocalDateTime.now());
+        craftsmanFirm1.setCreatedBy("system");
+        craftsmanFirm1.setLastModifiedBy("system");
+        
         craftsmanFirm1.setLandlord(landlord1);
         craftsmanFirmService.createCraftsmanFirm(craftsmanFirm1);
 
