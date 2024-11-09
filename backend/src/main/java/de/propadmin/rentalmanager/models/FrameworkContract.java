@@ -1,5 +1,6 @@
 package de.propadmin.rentalmanager.models;
 
+import de.propadmin.rentalmanager.models.enums.PaymentMethod;
 import de.propadmin.rentalmanager.models.enums.TradeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -56,6 +57,9 @@ public class FrameworkContract {
     private String bankName;
     private String accountHolder;
     private Integer paymentTermDays;
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private Set<PaymentMethod> acceptedPaymentMethods;
 
     // Service Level Agreement
     private Integer maxResponseTimeHours;

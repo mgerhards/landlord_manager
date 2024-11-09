@@ -7,13 +7,17 @@ import org.springframework.stereotype.Component;
 
 import de.propadmin.rentalmanager.models.Contract;
 import de.propadmin.rentalmanager.models.CraftsmanFirm;
+import de.propadmin.rentalmanager.models.FrameworkContract;
 import de.propadmin.rentalmanager.models.Landlord;
 import de.propadmin.rentalmanager.models.RealEstateObject;
 import de.propadmin.rentalmanager.models.Tenant;
 import de.propadmin.rentalmanager.models.Ticket;
 import de.propadmin.rentalmanager.models.enums.HeatingType;
+import de.propadmin.rentalmanager.models.enums.PaymentMethod;
 import de.propadmin.rentalmanager.models.enums.PropertyType;
 import de.propadmin.rentalmanager.models.enums.TradeType;
+import de.propadmin.rentalmanager.repositories.CraftsmanFirmRepository;
+import de.propadmin.rentalmanager.repositories.FrameworkContractRepository;
 import de.propadmin.rentalmanager.service.ContractService;
 import de.propadmin.rentalmanager.service.CraftsmanFirmService;
 import de.propadmin.rentalmanager.service.LandlordService;
@@ -46,7 +50,10 @@ public class DataInitializer implements CommandLineRunner {
     private ContractService contractService;
 
     @Autowired
-    private CraftsmanFirmService craftsmanFirmService;
+    private CraftsmanFirmRepository craftsmanFirmRepository;
+
+    @Autowired
+    private FrameworkContractRepository frameworkContractRepository;
 
     @Autowired
     private TicketService ticketService;
@@ -156,62 +163,60 @@ public class DataInitializer implements CommandLineRunner {
         contract1.setAsset(realEstateObject1);
         contractService.createContract(contract1);
 
-        // Create a craftsman firm
+       // Create craftsman firm
         CraftsmanFirm craftsmanFirm1 = new CraftsmanFirm();
-        craftsmanFirm1.setCompanyName("FixIt Ltd.");
-        craftsmanFirm1.setContactDetails("fixit@example.com, 555-4321");
+        craftsmanFirm1.setCompanyName("Meister Röhrich GmbH");
         craftsmanFirm1.setVatNumber("DE123456789");
         craftsmanFirm1.setRegistrationNumber("HRB 12345");
-        
-        // Address
-        craftsmanFirm1.setStreet("Handwerkerstraße");
+        craftsmanFirm1.setPrimaryContactName("Hans Röhrich");
+        craftsmanFirm1.setPhone("+49 30 12345678");
+        craftsmanFirm1.setEmergencyPhone("+49 176 12345678");
+        craftsmanFirm1.setEmail("info@roehrich-gmbh.de");
+        craftsmanFirm1.setWebsite("www.roehrich-gmbh.de");
+        craftsmanFirm1.setStreet("Wasserstraße");
         craftsmanFirm1.setHouseNumber("42");
-        craftsmanFirm1.setPostalCode("50667");
-        craftsmanFirm1.setCity("Köln");
-        craftsmanFirm1.setCountry("Germany");
-        
-        // Business Details
+        craftsmanFirm1.setPostalCode("12345");
+        craftsmanFirm1.setCity("Berlin");
+        craftsmanFirm1.setCountry("Deutschland");
         craftsmanFirm1.setTrades(Set.of(TradeType.PLUMBING, TradeType.HEATING));
         craftsmanFirm1.setIsEmergencyServiceProvider(true);
-        craftsmanFirm1.setEmergencyPhone("0800-24/7-FIXIT");
-        craftsmanFirm1.setAvailabilityHours("{'Mon-Fri': '8:00-18:00', 'Sat': '9:00-14:00'}");
-        craftsmanFirm1.setAcceptedPaymentMethods(Set.of("BANK_TRANSFER", "CREDIT_CARD"));
+        craftsmanFirm1.setAvailabilityHours("Mo-Fr 8:00-17:00");
+        craftsmanFirm1.setServicePostalCodes(Set.of("12345", "12347", "12348"));
+        craftsmanFirm1.setMaxTravelRadiusKm(50);
         craftsmanFirm1.setStandardHourlyRate(new BigDecimal("85.00"));
         craftsmanFirm1.setEmergencyHourlyRate(new BigDecimal("150.00"));
         craftsmanFirm1.setTravelCostPerKm(new BigDecimal("0.50"));
         craftsmanFirm1.setStandardWarrantyMonths(24);
-        
-        // Service Area
-        craftsmanFirm1.setServicePostalCodes(Set.of("50667", "50668", "50669", "50670"));
-        craftsmanFirm1.setMaxTravelRadiusKm(50);
-        
-        // Financial Information
-        craftsmanFirm1.setIban("DE89 3704 0044 0532 0130 00");
-        craftsmanFirm1.setBic("COBADEFFXXX");
-        craftsmanFirm1.setBankName("Commerzbank");
-        craftsmanFirm1.setAccountHolder("FixIt Ltd.");
-        
-        // Performance Metrics
-        craftsmanFirm1.setAverageRating(4.8);
-        craftsmanFirm1.setCompletedJobsCount(256);
-        craftsmanFirm1.setCancelledJobsCount(3);
-        craftsmanFirm1.setEmergencyResponseTimeMinutes(45);
-        
-        // Relationship Management
-        craftsmanFirm1.setLastJobDate(LocalDateTime.now().minusDays(5));
-        craftsmanFirm1.setContractedSince(LocalDateTime.now().minusYears(2));
-        craftsmanFirm1.setIsPreferredPartner(true);
-        craftsmanFirm1.setFrameworkContractNumber("FC-2021-123");
-        craftsmanFirm1.setNegotiatedDiscount(new BigDecimal("10.00"));
-        
-        // Audit Fields
-        craftsmanFirm1.setCreatedAt(LocalDateTime.now());
-        craftsmanFirm1.setUpdatedAt(LocalDateTime.now());
-        craftsmanFirm1.setCreatedBy("system");
-        craftsmanFirm1.setLastModifiedBy("system");
-        
-        craftsmanFirm1.setLandlord(landlord1);
-        craftsmanFirmService.createCraftsmanFirm(craftsmanFirm1);
+        craftsmanFirmRepository.save(craftsmanFirm1);
+
+        // Create framework contract
+        FrameworkContract fcontract1 = new FrameworkContract();
+        fcontract1.setCraftsmanFirm(craftsmanFirm1);
+        fcontract1.setLandlord(landlord1);
+        fcontract1.setContractNumber("FC-2024-001");
+        fcontract1.setStartDate(LocalDate.now());
+        fcontract1.setEndDate(LocalDate.now().plusYears(2));
+        fcontract1.setIsActive(true);
+        fcontract1.setNegotiatedHourlyRate(new BigDecimal("80.00")); // Discounted rate
+        fcontract1.setNegotiatedEmergencyRate(new BigDecimal("140.00"));
+        fcontract1.setNegotiatedTravelCost(new BigDecimal("0.45"));
+        fcontract1.setDiscountPercentage(new BigDecimal("5.00"));
+        fcontract1.setWarrantyMonths(24);
+        fcontract1.setIban("DE89370400440532013000");
+        fcontract1.setBic("DEUTDEBBXXX");
+        fcontract1.setBankName("Deutsche Bank");
+        fcontract1.setAccountHolder("Meister Röhrich GmbH");
+        fcontract1.setPaymentTermDays(30);
+        fcontract1.setAcceptedPaymentMethods(Set.of(PaymentMethod.BANK_TRANSFER, PaymentMethod.INVOICE));
+        fcontract1.setMaxResponseTimeHours(24);
+        fcontract1.setEmergencyResponseTimeMinutes(120);
+        fcontract1.setIncludesWeekendService(false);
+        fcontract1.setServiceHours("Mo-Fr 8:00-17:00");
+        fcontract1.setCoveredTrades(Set.of(TradeType.PLUMBING, TradeType.HEATING));
+        fcontract1.setRequiredInsuranceAmount(new BigDecimal("1000000.00"));
+        fcontract1.setInsuranceExpiryDate(LocalDate.now().plusYears(1));
+        fcontract1.setInsurancePolicyNumber("POL-123456");
+        frameworkContractRepository.save(fcontract1);
 
         // Create a ticket for a tenant issue
         Ticket ticket1 = new Ticket();
