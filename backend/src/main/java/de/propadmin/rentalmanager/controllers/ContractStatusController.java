@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.propadmin.rentalmanager.dto.ContractStatusDTO;
 import de.propadmin.rentalmanager.models.enums.ContractStatus;
 
 @RestController
