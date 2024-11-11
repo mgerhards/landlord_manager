@@ -2,6 +2,7 @@ package de.propadmin.rentalmanager;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,34 +23,60 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        .cors().and() // Enable CORS
-        .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity (not recommended for production)
-        .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/", "/login", "/h2-console/**", "/error").permitAll() // Ensure login and home pages are accessible
-            .anyRequest().authenticated() // All other pages require authentication
-        )
-        .formLogin(form -> form
-            .loginPage("/login") // Custom login page
-            .defaultSuccessUrl("/", true) // Redirect to home page after successful login
-            .permitAll()
-        )
-        .logout(logout -> logout
-            .logoutUrl("/logout") // URL for logout
-            .logoutSuccessUrl("/login?logout") // Redirect to login page after logout
-            .permitAll()
-        ) 
-        .headers(headers -> headers.frameOptions().sameOrigin()); ;
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers(
+                    "/",
+                    "/login",
+                    "/api/auth/**",
+                    "/h2-console/**",
+                    "/error"
+                ).permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginProcessingUrl("/api/auth/login")
+                .successHandler((request, response, authentication) -> {
+                    response.setStatus(HttpStatus.OK.value());
+                })
+                .failureHandler((request, response, exception) -> {
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                })
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/api/auth/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpStatus.OK.value());
+                })
+                .permitAll()
+            )
+            .headers(headers -> headers.frameOptions().sameOrigin());
+
         return http.build();
     }
 
-    
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Set your frontend origin
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(List.of(
+            "Authorization",
+            "Content-Type",
+            "X-Requested-With",
+            "Accept",
+            "Origin",
+            "Access-Control-Request-Method",
+            "Access-Control-Request-Headers"
+        ));
+        configuration.setExposedHeaders(List.of(
+            "Access-Control-Allow-Origin",
+            "Access-Control-Allow-Credentials"
+        ));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -60,7 +87,7 @@ public class WebSecurityConfig {
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
             .username("user")
-            .password(passwordEncoder().encode("password")) // Use a more secure password in production
+            .password(passwordEncoder().encode("password"))
             .roles("USER")
             .build();
 

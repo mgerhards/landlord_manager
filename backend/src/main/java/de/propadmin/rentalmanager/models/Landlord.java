@@ -37,7 +37,7 @@ public class Landlord {
 
     @OneToMany(mappedBy = "landlord")
     @JsonManagedReference
-    private List<CraftsmanFirm> craftsmanFirms;
+    private List<FrameworkContract> frameworkContracts;
 
     // Getters and Setters
 }
