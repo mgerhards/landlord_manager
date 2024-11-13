@@ -1,5 +1,11 @@
 package de.propadmin.rentalmanager;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -19,19 +25,12 @@ import de.propadmin.rentalmanager.models.enums.TradeType;
 import de.propadmin.rentalmanager.repositories.CraftsmanFirmRepository;
 import de.propadmin.rentalmanager.repositories.FrameworkContractRepository;
 import de.propadmin.rentalmanager.service.ContractService;
-import de.propadmin.rentalmanager.service.CraftsmanFirmService;
 import de.propadmin.rentalmanager.service.LandlordService;
 import de.propadmin.rentalmanager.service.RealEstateObjectService;
 import de.propadmin.rentalmanager.service.TenantService;
 import de.propadmin.rentalmanager.service.TicketService;
 import de.propadmin.rentalmanager.utils.GeocodeResponse;
 import de.propadmin.rentalmanager.utils.GeocodeUtils;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Set;
-import java.math.BigDecimal;
 
 
 @Component
