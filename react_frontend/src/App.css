@@ -1,3 +1,6 @@
 .sidebar-brand .brand-link .brand-image{
     max-height:65px;
 }
+.btn:hover {
+  cursor: pointer;
+}

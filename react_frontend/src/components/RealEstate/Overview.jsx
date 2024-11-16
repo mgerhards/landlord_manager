@@ -40,6 +40,14 @@ const RealEstateOverview = () => {
                                         <p><strong>Größe:</strong> {obj.size} m²</p>
                                         <p><strong>Anzahl Zimmer:</strong> {obj.numberOfRooms}</p>
                                         <p><strong>Beschreibung:</strong> {obj.description}</p>
+                                        <p>
+                                            <button 
+                                                type="button"
+                                                className="btn btn-block bg-gradient-primary btn-primary btn-sm w-100"
+                                                onClick={() => window.location.href = `/realestate/detail/${obj.id}`}>
+                                                Details
+                                            </button>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
