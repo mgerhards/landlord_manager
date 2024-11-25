@@ -20,7 +20,16 @@ const App = () => {
     import('admin-lte');
   }, []);
 
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  
+  useEffect(() => {
+    if (token) {
+        localStorage.setItem('token', token);
+    } else {
+        localStorage.removeItem('token');
+    }
+}, [token]);
+
   if (!token) {
     return (
       <div className="app-wrapper sidebar-expand-lg bg-body-tertiary sidebar-open">

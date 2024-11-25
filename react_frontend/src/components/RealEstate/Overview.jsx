@@ -44,7 +44,7 @@ const RealEstateOverview = () => {
                                             <button 
                                                 type="button"
                                                 className="btn btn-block bg-gradient-primary btn-primary btn-sm w-100"
-                                                onClick={() => window.location.href = `/realestate/detail/${obj.id}`}>
+                                                onClick={() => window.location.href = `/immobilien/details/${obj.id}`}>
                                                 Details
                                             </button>
                                         </p>
