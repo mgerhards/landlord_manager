@@ -1,15 +1,26 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 
 const RealEstateDetails = () => {
-    const { id } = useParams();
-    
-    return (
-        <div>
-            <h1>Real Estate Details for {id}</h1>
-            <p>Details about the real estate will be displayed here.</p>
-        </div>
-    );
+  const location = useLocation();
+  const { realEstateObject } = location.state || {};
+
+  if (!realEstateObject) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      <h1>{realEstateObject.name}</h1>
+      <p>{realEstateObject.description}</p>
+      {/* Add more fields as necessary */}
+    </div>
+  );
+};
+
+RealEstateDetails.propTypes = {
+  realEstateObject: PropTypes.object
 };
 
 export default RealEstateDetails;

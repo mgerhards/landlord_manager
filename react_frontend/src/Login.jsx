@@ -20,7 +20,8 @@ const Login = ({ setToken }) => {
         });
 
         if (response.ok) {
-            setToken("authenticated");
+            const token = await response.text(); // Assuming the token is returned as plain text
+            setToken(token);
         } else {
             console.error('Login failed');
         }
@@ -55,7 +56,7 @@ const Login = ({ setToken }) => {
 };
 
 Login.propTypes = {
-    setToken: PropTypes.func.isRequired,
+    setIsAuthenticated: PropTypes.func.isRequired,
 };
 
 export default Login;

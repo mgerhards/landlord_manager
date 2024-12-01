@@ -19,6 +19,34 @@ const App = () => {
   }, []);
 
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [realEstateObject, setRealEstateObject] = useState(null);
+
+  const loadRealEstateObject = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/realestate/${id}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setRealEstateObject(data);
+      } else {
+        console.error('Failed to load real estate object');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    const id = window.location.pathname.split('/').pop();
+    if (id) {
+      loadRealEstateObject(id);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (token) {
@@ -28,7 +56,7 @@ const App = () => {
     }
   }, [token]);
 
-  if (!token) {
+  if (!token && token !== "undefined" && token !=="") {
     return (
       <div className="app-wrapper sidebar-expand-lg bg-body-tertiary sidebar-open">
         <Sidebar />
@@ -47,7 +75,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/immobilien" element={<RealEstateOverview />} />
-            <Route path="/immobilien/details/:id" element={<RealEstateDetails />} />
+            <Route path="/immobilien/details/:id" element={<RealEstateDetails realEstateObject={realEstateObject} />} />
             <Route path="/tennants" element={<TennantsOverview />} />
             <Route path="/companies" element={<CompaniesOverview />} />
             <Route path="/tickets" element={<TicketsOverview />} />

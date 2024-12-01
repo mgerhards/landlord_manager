@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { ENDPOINTS } from '../../config/api';
-
+import OpenDetailsButton
+ from './OpenDetailsButton';
 const RealEstateOverview = () => {
     const [realEstateObjects, setRealEstateObjects] = useState([]);
 
@@ -41,12 +42,7 @@ const RealEstateOverview = () => {
                                         <p><strong>Anzahl Zimmer:</strong> {obj.numberOfRooms}</p>
                                         <p><strong>Beschreibung:</strong> {obj.description}</p>
                                         <p>
-                                            <button 
-                                                type="button"
-                                                className="btn btn-block bg-gradient-primary btn-primary btn-sm w-100"
-                                                onClick={() => window.location.href = `/immobilien/details/${obj.id}`}>
-                                                Details
-                                            </button>
+                                            <OpenDetailsButton obj={obj} />
                                         </p>
                                     </div>
                                 </div>
