@@ -61,7 +61,9 @@ const App = () => {
       <div className="app-wrapper sidebar-expand-lg bg-body-tertiary sidebar-open">
         <Sidebar />
         <div className="content-wrapper">
-          <Login setToken={setToken} />
+          <section className="content">
+            <Login setToken={setToken} />
+          </section>
         </div>
       </div>
     );

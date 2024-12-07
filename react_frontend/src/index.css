@@ -66,3 +66,10 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.real-estate-details-container {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .125);
+  position: relative;
+  margin-top: 15px;
+}
