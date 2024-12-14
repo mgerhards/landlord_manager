@@ -52,6 +52,10 @@ public class WebSecurityConfig {
                 })
                 .permitAll()
             )
+            .oauth2Login(oauth2 -> oauth2
+            .loginPage("/login")
+            .defaultSuccessUrl("/home", true)
+            )
             .headers(headers -> headers.frameOptions().sameOrigin());
 
         return http.build();
