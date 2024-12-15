@@ -9,6 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -53,8 +57,8 @@ public class WebSecurityConfig {
                 .permitAll()
             )
             .oauth2Login(oauth2 -> oauth2
-            .loginPage("/login")
-            .defaultSuccessUrl("/home", true)
+                .loginPage("/login")
+                .defaultSuccessUrl("/home", true)
             )
             .headers(headers -> headers.frameOptions().sameOrigin());
 
@@ -85,6 +89,24 @@ public class WebSecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+        @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("client")
+            .clientId("client-id")
+            .clientSecret("client-secret")
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
+            .scope("openid", "profile")
+            .authorizationUri("http://localhost:8080/oauth2/authorize")
+            .tokenUri("http://localhost:8080/oauth2/token")
+            .userInfoUri("http://localhost:8080/userinfo")
+            .userNameAttributeName("id")
+            .clientName("Client")
+            .build();
+
+        return new InMemoryClientRegistrationRepository(clientRegistration);
     }
 
     @Bean
