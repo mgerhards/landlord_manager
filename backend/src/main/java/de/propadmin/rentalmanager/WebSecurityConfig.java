@@ -35,7 +35,8 @@ public class WebSecurityConfig {
                     "/login",
                     "/api/auth/**",
                     "/h2-console/**",
-                    "/error"
+                    "/error",
+                    "/oauth2/token"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
@@ -111,12 +112,10 @@ public class WebSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-            .username("user")
+        UserDetails user = User.withUsername("user")
             .password(passwordEncoder().encode("password"))
             .roles("USER")
             .build();
-
         return new InMemoryUserDetailsManager(user);
     }
 
