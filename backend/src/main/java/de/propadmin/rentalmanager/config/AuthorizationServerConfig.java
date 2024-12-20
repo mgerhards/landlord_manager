@@ -1,4 +1,4 @@
-package de.propadmin.rentalmanager;
+package de.propadmin.rentalmanager.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +41,7 @@ public class AuthorizationServerConfig {
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
             ) 
             .oauth2ResourceServer(oauth2 -> oauth2.jwt())
-            .formLogin();
+            .formLogin(Customizer.withDefaults());
          // Add OpenID Connect endpoints
         
          http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
@@ -58,7 +58,7 @@ public class AuthorizationServerConfig {
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri("http://localhost:8080/")
+            .redirectUri("http://localhost:8081")
             .scope("openid")
             .scope("profile")
             .build();

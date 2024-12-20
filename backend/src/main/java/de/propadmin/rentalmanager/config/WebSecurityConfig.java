@@ -1,4 +1,4 @@
-package de.propadmin.rentalmanager;
+package de.propadmin.rentalmanager.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

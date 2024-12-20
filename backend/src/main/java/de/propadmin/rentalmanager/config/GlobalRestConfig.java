@@ -1,4 +1,4 @@
-package de.propadmin.rentalmanager;
+package de.propadmin.rentalmanager.config;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.EntityType;
