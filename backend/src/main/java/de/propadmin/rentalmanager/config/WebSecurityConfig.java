@@ -32,35 +32,21 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(
                     "/",
-                    "/login",
                     "/api/auth/**",
                     "/h2-console/**",
-                    "/error",
-                    "/oauth2/token"
+                    "/error"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .loginProcessingUrl("/api/auth/login")
-                .successHandler((request, response, authentication) -> {
-                    response.setStatus(HttpStatus.OK.value());
-                })
-                .failureHandler((request, response, exception) -> {
-                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                })
+                .loginPage("/login")
                 .permitAll()
             )
             .logout(logout -> logout
                 .logoutUrl("/api/auth/logout")
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setStatus(HttpStatus.OK.value());
-                })
                 .permitAll()
             )
-            .oauth2Login(oauth2 -> oauth2
-                .loginPage("/login")
-                .defaultSuccessUrl("/home", true)
-            )
+
             .headers(headers -> headers.frameOptions().sameOrigin());
 
         return http.build();
@@ -92,7 +78,7 @@ public class WebSecurityConfig {
         return source;
     }
 
-        @Bean
+    @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("client")
             .clientId("client-id")
