@@ -35,15 +35,22 @@ public class AuthorizationServerConfig {
 
     @Bean
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        //OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-            .oidc(Customizer.withDefaults()); // Enables OpenID Connect 1.0 support
+        //http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+        //    .oidc(Customizer.withDefaults()); // Enables OpenID Connect 1.0 support
 
-        http
+        http.securityMatcher("/oauth2/**")
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/oauth2/token","/login")) // Disable CSRF for the token endpoint
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt()) // Optional: Only required if you're using JWTs
             .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
             )
+           
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/oauth2/token").permitAll() // Allow access to the token endpoint
+                .anyRequest().authenticated()
+            )  
             .formLogin(Customizer.withDefaults()); // Default form login for OAuth2 flow
 
         return http.build();
