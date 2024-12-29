@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import de.propadmin.rentalmanager.models.Contract;
 import de.propadmin.rentalmanager.models.CraftsmanFirm;
+import de.propadmin.rentalmanager.models.ContactPerson;
 import de.propadmin.rentalmanager.models.FrameworkContract;
 import de.propadmin.rentalmanager.models.Landlord;
 import de.propadmin.rentalmanager.models.RealEstateObject;
@@ -77,7 +78,10 @@ public class DataInitializer implements CommandLineRunner {
         Landlord landlord1 = new Landlord();
         landlord1.setName("John Doe");
         landlord1.setEmail("john.doe@example.com");
+        landlord1.setPassword("password"); // Set a password for the user
         landlord1.setPhoneNumber("555-1234");
+        landlord1.setLicenseKey("LICENSE-1234-5678-9012");
+        landlord1.setLicenseExpirationDate(LocalDate.of(2030, 12, 31)); // License valid until 2030
         landlordService.createLandlord(landlord1);
 
         // Create a real estate object (property)
@@ -186,6 +190,25 @@ public class DataInitializer implements CommandLineRunner {
         craftsmanFirm1.setEmergencyHourlyRate(new BigDecimal("150.00"));
         craftsmanFirm1.setTravelCostPerKm(new BigDecimal("0.50"));
         craftsmanFirm1.setStandardWarrantyMonths(24);
+        craftsmanFirmRepository.save(craftsmanFirm1);
+
+        // Create contact persons for the craftsman firm
+        ContactPerson contactPerson1 = new ContactPerson();
+        contactPerson1.setName("Hans Röhrich");
+        contactPerson1.setEmail("hans.roehrich@roehrich-gmbh.de");
+        contactPerson1.setPhoneNumber("+49 30 12345678");
+        contactPerson1.setRole(ContactPerson.Role.CRAFTSMAN);
+        contactPerson1.setCraftsmanFirm(craftsmanFirm1);
+
+        ContactPerson contactPerson2 = new ContactPerson();
+        contactPerson2.setName("Anna Müller");
+        contactPerson2.setEmail("anna.mueller@roehrich-gmbh.de");
+        contactPerson2.setPhoneNumber("+49 30 87654321");
+        contactPerson2.setRole(ContactPerson.Role.ADMINISTRATIVE_PERSONNEL);
+        contactPerson2.setCraftsmanFirm(craftsmanFirm1);
+
+        // Save contact persons
+        craftsmanFirm1.setContactPersons(Arrays.asList(contactPerson1, contactPerson2));
         craftsmanFirmRepository.save(craftsmanFirm1);
 
         // Create framework contract
