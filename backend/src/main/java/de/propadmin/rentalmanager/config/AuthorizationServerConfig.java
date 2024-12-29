@@ -35,24 +35,31 @@ public class AuthorizationServerConfig {
 
     @Bean
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        //OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        // Initialize the OAuth2 Authorization Server configurer
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
-        //http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-        //    .oidc(Customizer.withDefaults()); // Enables OpenID Connect 1.0 support
-
-        http.securityMatcher("/oauth2/**")
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/oauth2/token","/login")) // Disable CSRF for the token endpoint
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt()) // Optional: Only required if you're using JWTs
+        // Apply the Authorization Server configuration
+        http.apply(authorizationServerConfigurer);
+        
+        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+            .oidc(Customizer.withDefaults()); // Enables OpenID Connect 1.0 support
+            
+            http
+            .securityMatcher("/oauth2/**") // Apply this filter chain only to OAuth2-related endpoints
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/oauth2/token").permitAll() // Allow public access to the token endpoint
+                .requestMatchers("/oauth2/jwks").permitAll()  // Allow public access to JWKS
+                .requestMatchers("/oauth2/authorize").authenticated() // Secure authorization endpoint
+                .anyRequest().authenticated()                         // Secure any other endpoints
+            )
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/oauth2/token", "/login")) // Disable CSRF for token endpoint
             .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
             )
-           
-            .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/oauth2/token").permitAll() // Allow access to the token endpoint
-                .anyRequest().authenticated()
-            )  
-            .formLogin(Customizer.withDefaults()); // Default form login for OAuth2 flow
-
+            .formLogin(Customizer.withDefaults()) // Default form login for OAuth2 flow
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt()); // Optional: Enable JWT support if needed
+    
+            
         return http.build();
     }
 
@@ -75,7 +82,7 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-            .tokenEndpoint("/oauth/token")
+            .tokenEndpoint("/oauth2/token")
             .build();
     }
 
