@@ -83,4 +83,8 @@ public class CraftsmanFirm {
     @OneToMany(mappedBy = "craftsmanFirm")
     @JsonManagedReference
     private List<Ticket> tickets;
+
+    @OneToMany(mappedBy = "craftsmanFirm")
+    @JsonManagedReference
+    private List<ContactPerson> contactPersons;
 }
