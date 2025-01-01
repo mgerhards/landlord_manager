@@ -12,7 +12,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Landlord extends User {
+public class Landlord extends UserAccount {
 
     private String name;
     private String phoneNumber;

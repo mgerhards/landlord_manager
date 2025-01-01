@@ -21,16 +21,19 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
+import de.propadmin.rentalmanager.models.UserAccount;
+import de.propadmin.rentalmanager.repositories.UserRepository;
+import de.propadmin.rentalmanager.utils.exeptions.UsernameNotFoundException;
+
 @Configuration
 public class AuthorizationServerConfig {
 
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    private final UserDetailsService userDetailsService;
-
-    public AuthorizationServerConfig(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+    public AuthorizationServerConfig(PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
-        this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
     }
 
     @Bean
@@ -61,6 +64,20 @@ public class AuthorizationServerConfig {
     
             
         return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            UserAccount user = userRepository.findByEmail(username);
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found");
+            }
+            return User.withUsername(user.getEmail())
+                .password(user.getPassword())
+                .roles("USER")
+                .build();
+        };
     }
 
     @Bean

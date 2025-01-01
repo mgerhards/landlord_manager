@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class ContactPerson extends User {
+public class ContactPerson extends UserAccount {
 
     public enum Role {
         CRAFTSMAN,

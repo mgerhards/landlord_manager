@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "AppUser")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter @Setter
-public abstract class User {
+public abstract class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
