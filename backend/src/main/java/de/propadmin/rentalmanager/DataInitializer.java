@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import de.propadmin.rentalmanager.models.Contract;
@@ -36,6 +37,9 @@ import de.propadmin.rentalmanager.utils.GeocodeUtils;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private LandlordService landlordService;
@@ -78,7 +82,8 @@ public class DataInitializer implements CommandLineRunner {
         Landlord landlord1 = new Landlord();
         landlord1.setName("John Doe");
         landlord1.setEmail("john.doe@example.com");
-        landlord1.setPassword("password"); // Set a password for the user
+        String hashedPassword = passwordEncoder.encode("password");
+        landlord1.setPassword(hashedPassword);
         landlord1.setPhoneNumber("555-1234");
         landlord1.setLicenseKey("LICENSE-1234-5678-9012");
         landlord1.setLicenseExpirationDate(LocalDate.of(2030, 12, 31)); // License valid until 2030
