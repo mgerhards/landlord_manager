@@ -81,7 +81,7 @@ public class DataInitializer implements CommandLineRunner {
         // Create a landlord
         Landlord landlord1 = new Landlord();
         landlord1.setName("John Doe");
-        landlord1.setEmail("john.doe@example.com");
+        landlord1.setEmail("info@gendis.de");
         String hashedPassword = passwordEncoder.encode("password");
         landlord1.setPassword(hashedPassword);
         landlord1.setPhoneNumber("555-1234");
