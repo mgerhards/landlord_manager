@@ -2,9 +2,9 @@ import requests
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="http://your-spring-boot-backend/oauth2/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="http://localhost:8080/oauth2/token")
 
-SPRING_BOOT_TOKEN_VALIDATION_URL = "http://your-spring-boot-backend/oauth2/check_token"
+SPRING_BOOT_TOKEN_VALIDATION_URL = "http://localhost:8080/oauth2/check_token"
 
 def validate_token_with_spring(token: str):
     response = requests.get(SPRING_BOOT_TOKEN_VALIDATION_URL, params={"token": token})
