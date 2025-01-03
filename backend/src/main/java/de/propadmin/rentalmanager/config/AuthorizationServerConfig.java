@@ -48,7 +48,9 @@ public class AuthorizationServerConfig {
             .oidc(Customizer.withDefaults()); // Enables OpenID Connect 1.0 support
             
             http
-            .securityMatcher("/oauth2/**") // Apply this filter chain only to OAuth2-related endpoints
+            .securityMatcher("/oauth2/**") // Apply this filter chain only to OAuth2-related endpoints            
+            .cors(cors -> cors.disable()) // Disable CORS for OAuth2 endpoints
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/oauth2/token").permitAll() // Allow public access to the token endpoint
                 .requestMatchers("/oauth2/jwks").permitAll()  // Allow public access to JWKS
