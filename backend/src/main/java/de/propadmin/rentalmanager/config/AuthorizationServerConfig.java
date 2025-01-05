@@ -49,7 +49,8 @@ public class AuthorizationServerConfig {
             
             http
             .securityMatcher("/oauth2/**") // Apply this filter chain only to OAuth2-related endpoints            
-            .cors(cors -> cors.disable()) // Disable CORS for OAuth2 endpoints
+            //.cors(cors -> cors.disable()) // Disable CORS for OAuth2 endpoints
+            .cors(Customizer.withDefaults()) // Enable CORS for OAuth2 endpoints
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/oauth2/token").permitAll() // Allow public access to the token endpoint
@@ -70,6 +71,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
+
         return username -> {
             UserAccount user = userRepository.findByEmail(username);
             if (user == null) {
