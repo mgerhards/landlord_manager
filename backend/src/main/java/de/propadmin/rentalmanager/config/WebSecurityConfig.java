@@ -99,5 +99,10 @@ public class WebSecurityConfig {
 
         return new InMemoryClientRegistrationRepository(clientRegistration);
     }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }

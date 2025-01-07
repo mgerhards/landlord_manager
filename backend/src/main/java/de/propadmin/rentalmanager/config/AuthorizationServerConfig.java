@@ -15,7 +15,6 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
@@ -75,7 +74,10 @@ public class AuthorizationServerConfig {
             if (user == null) {
                 throw new UsernameNotFoundException("User not found");
             }
-            return user;
+            return User.withUsername(user.getEmail())
+                .password(user.getPassword())
+                .roles("USER")
+                .build();
         };
     }
 
@@ -87,7 +89,7 @@ public class AuthorizationServerConfig {
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri("http://localhost:5173/")
+            .redirectUri("http://localhost:5173")
             .scope("openid")
             .scope("profile")
             .build();
@@ -102,9 +104,5 @@ public class AuthorizationServerConfig {
             .build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 }
