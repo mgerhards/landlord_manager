@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
@@ -74,10 +75,7 @@ public class AuthorizationServerConfig {
             if (user == null) {
                 throw new UsernameNotFoundException("User not found");
             }
-            return User.withUsername(user.getEmail())
-                .password(user.getPassword())
-                .roles("USER")
-                .build();
+            return user;
         };
     }
 
@@ -104,5 +102,9 @@ public class AuthorizationServerConfig {
             .build();
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }
