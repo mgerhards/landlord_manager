@@ -20,6 +20,7 @@ import de.propadmin.rentalmanager.models.Landlord;
 import de.propadmin.rentalmanager.models.RealEstateObject;
 import de.propadmin.rentalmanager.models.Tenant;
 import de.propadmin.rentalmanager.models.Ticket;
+import de.propadmin.rentalmanager.models.UserAccount;
 import de.propadmin.rentalmanager.models.enums.HeatingType;
 import de.propadmin.rentalmanager.models.enums.PaymentMethod;
 import de.propadmin.rentalmanager.models.enums.PropertyType;
@@ -81,12 +82,17 @@ public class DataInitializer implements CommandLineRunner {
         // Create a landlord
         Landlord landlord1 = new Landlord();
         landlord1.setName("John Doe");
-        landlord1.setEmail("info@gendis.de");
-        String hashedPassword = passwordEncoder.encode("password");
-        landlord1.setPassword(hashedPassword);
         landlord1.setPhoneNumber("555-1234");
         landlord1.setLicenseKey("LICENSE-1234-5678-9012");
         landlord1.setLicenseExpirationDate(LocalDate.of(2030, 12, 31)); // License valid until 2030
+
+        // Create a user account for the landlord
+        UserAccount userAccount1 = new UserAccount();
+        userAccount1.setEmail("info@gendis.de");
+        userAccount1.setPassword(passwordEncoder.encode("password"));
+        //userAccount1.setRole("LANDLORD");
+        landlord1.setUserAccount(userAccount1);
+
         landlordService.createLandlord(landlord1);
 
         // Create a real estate object (property)
