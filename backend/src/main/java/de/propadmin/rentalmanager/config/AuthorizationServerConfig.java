@@ -89,7 +89,7 @@ public class AuthorizationServerConfig {
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri("http://localhost:5173/")
+            .redirectUri("http://localhost:5173")
             .scope("openid")
             .scope("profile")
             .build();
