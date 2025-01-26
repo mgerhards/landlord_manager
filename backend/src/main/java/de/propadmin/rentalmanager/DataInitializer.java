@@ -148,8 +148,11 @@ public class DataInitializer implements CommandLineRunner {
 
         // Create a tenant
         Tenant tenant1 = new Tenant();
+        UserAccount tenantUserAccount = new UserAccount();
+        tenantUserAccount.setEmail("jane.smith@example.com");
+        tenantUserAccount.setPassword(passwordEncoder.encode("tenantpassword"));
+        tenant1.setUserAccount(tenantUserAccount);
         tenant1.setName("Jane Smith");
-        tenant1.setEmail("jane.smith@example.com");
         tenant1.setPhoneNumber("555-6789");
         tenant1.setDateOfBirth(LocalDate.of(1985, 6, 15));
         tenant1.setIdNumber("ID123456789");
@@ -206,17 +209,25 @@ public class DataInitializer implements CommandLineRunner {
         // Create contact persons for the craftsman firm
         ContactPerson contactPerson1 = new ContactPerson();
         contactPerson1.setName("Hans Röhrich");
-        contactPerson1.setEmail("hans.roehrich@roehrich-gmbh.de");
         contactPerson1.setPhoneNumber("+49 30 12345678");
         contactPerson1.setRole(ContactPerson.Role.CRAFTSMAN);
         contactPerson1.setCraftsmanFirm(craftsmanFirm1);
 
+        UserAccount contactPerson1UserAccount = new UserAccount();
+        contactPerson1UserAccount.setEmail("hans.roehrich@roehrich-gmbh.de");
+        contactPerson1UserAccount.setPassword(passwordEncoder.encode("password"));
+        contactPerson1.setUserAccount(contactPerson1UserAccount);
+
         ContactPerson contactPerson2 = new ContactPerson();
         contactPerson2.setName("Anna Müller");
-        contactPerson2.setEmail("anna.mueller@roehrich-gmbh.de");
         contactPerson2.setPhoneNumber("+49 30 87654321");
         contactPerson2.setRole(ContactPerson.Role.ADMINISTRATIVE_PERSONNEL);
         contactPerson2.setCraftsmanFirm(craftsmanFirm1);
+
+        UserAccount contactPerson2UserAccount = new UserAccount();
+        contactPerson2UserAccount.setEmail("anna.mueller@roehrich-gmbh.de");
+        contactPerson2UserAccount.setPassword(passwordEncoder.encode("password"));
+        contactPerson2.setUserAccount(contactPerson2UserAccount);
 
         // Save contact persons
         craftsmanFirm1.setContactPersons(Arrays.asList(contactPerson1, contactPerson2));
