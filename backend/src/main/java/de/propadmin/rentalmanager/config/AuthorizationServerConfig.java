@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
-import de.propadmin.rentalmanager.models.UserAccount;
+import de.propadmin.rentalmanager.models.AppUser;
 import de.propadmin.rentalmanager.repositories.UserRepository;
 import de.propadmin.rentalmanager.utils.exeptions.UsernameNotFoundException;
 
@@ -70,7 +70,7 @@ public class AuthorizationServerConfig {
     public UserDetailsService userDetailsService() {
 
         return username -> {
-            UserAccount user = userRepository.findByEmail(username);
+            AppUser user = userRepository.findByEmail(username);
             if (user == null) {
                 throw new UsernameNotFoundException("User not found");
             }
