@@ -27,7 +27,7 @@ public class Tenant {
 
     @OneToOne
     @JoinColumn(name = "user_account_id")
-    private UserAccount userAccount;
+    private AppUser userAccount;
 
     private String name;
     private String phoneNumber;

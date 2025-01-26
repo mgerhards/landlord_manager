@@ -20,7 +20,7 @@ import de.propadmin.rentalmanager.models.Landlord;
 import de.propadmin.rentalmanager.models.RealEstateObject;
 import de.propadmin.rentalmanager.models.Tenant;
 import de.propadmin.rentalmanager.models.Ticket;
-import de.propadmin.rentalmanager.models.UserAccount;
+import de.propadmin.rentalmanager.models.AppUser;
 import de.propadmin.rentalmanager.models.enums.HeatingType;
 import de.propadmin.rentalmanager.models.enums.PaymentMethod;
 import de.propadmin.rentalmanager.models.enums.PropertyType;
@@ -87,7 +87,7 @@ public class DataInitializer implements CommandLineRunner {
         landlord1.setLicenseExpirationDate(LocalDate.of(2030, 12, 31)); // License valid until 2030
 
         // Create a user account for the landlord
-        UserAccount userAccount1 = new UserAccount();
+        AppUser userAccount1 = new AppUser();
         userAccount1.setEmail("info@gendis.de");
         userAccount1.setPassword(passwordEncoder.encode("password"));
         //userAccount1.setRole("LANDLORD");
@@ -148,7 +148,7 @@ public class DataInitializer implements CommandLineRunner {
 
         // Create a tenant
         Tenant tenant1 = new Tenant();
-        UserAccount tenantUserAccount = new UserAccount();
+        AppUser tenantUserAccount = new AppUser();
         tenantUserAccount.setEmail("jane.smith@example.com");
         tenantUserAccount.setPassword(passwordEncoder.encode("tenantpassword"));
         tenant1.setUserAccount(tenantUserAccount);
@@ -213,7 +213,7 @@ public class DataInitializer implements CommandLineRunner {
         contactPerson1.setRole(ContactPerson.Role.CRAFTSMAN);
         contactPerson1.setCraftsmanFirm(craftsmanFirm1);
 
-        UserAccount contactPerson1UserAccount = new UserAccount();
+        AppUser contactPerson1UserAccount = new AppUser();
         contactPerson1UserAccount.setEmail("hans.roehrich@roehrich-gmbh.de");
         contactPerson1UserAccount.setPassword(passwordEncoder.encode("password"));
         contactPerson1.setUserAccount(contactPerson1UserAccount);
@@ -224,7 +224,7 @@ public class DataInitializer implements CommandLineRunner {
         contactPerson2.setRole(ContactPerson.Role.ADMINISTRATIVE_PERSONNEL);
         contactPerson2.setCraftsmanFirm(craftsmanFirm1);
 
-        UserAccount contactPerson2UserAccount = new UserAccount();
+        AppUser contactPerson2UserAccount = new AppUser();
         contactPerson2UserAccount.setEmail("anna.mueller@roehrich-gmbh.de");
         contactPerson2UserAccount.setPassword(passwordEncoder.encode("password"));
         contactPerson2.setUserAccount(contactPerson2UserAccount);

@@ -1,7 +1,5 @@
 package de.propadmin.rentalmanager.models;
 
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,9 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "AppUser")
 @Getter @Setter
-public class UserAccount{
+public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

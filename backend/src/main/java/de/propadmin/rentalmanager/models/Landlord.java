@@ -21,7 +21,7 @@ public class Landlord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private UserAccount userAccount;
+    private AppUser userAccount;
 
     private String name;
     private String phoneNumber;

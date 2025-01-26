@@ -23,7 +23,7 @@ public class ContactPerson {
         ADMINISTRATIVE_PERSONNEL
     }
 
-    private UserAccount userAccount;
+    private AppUser userAccount;
 
     private String name;
     private String phoneNumber;
