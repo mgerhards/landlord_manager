@@ -19,16 +19,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
 import de.propadmin.rentalmanager.models.AppUser;
-import de.propadmin.rentalmanager.repositories.UserRepository;
+import de.propadmin.rentalmanager.repositories.AppUserRepository;
 import de.propadmin.rentalmanager.utils.exeptions.UsernameNotFoundException;
 
 @Configuration
 public class AuthorizationServerConfig {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final AppUserRepository userRepository;
 
-    public AuthorizationServerConfig(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public AuthorizationServerConfig(PasswordEncoder passwordEncoder, AppUserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }

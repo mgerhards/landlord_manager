@@ -18,14 +18,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.List;
-import de.propadmin.rentalmanager.repositories.UserRepository;
+import de.propadmin.rentalmanager.repositories.AppUserRepository;
 
 @Configuration
 public class WebSecurityConfig {
 
-    private final UserRepository userRepository;
+    private final AppUserRepository userRepository;
 
-    public WebSecurityConfig(UserRepository userRepository) {
+    public WebSecurityConfig(AppUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

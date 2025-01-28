@@ -27,6 +27,7 @@ import de.propadmin.rentalmanager.models.enums.PropertyType;
 import de.propadmin.rentalmanager.models.enums.TradeType;
 import de.propadmin.rentalmanager.repositories.CraftsmanFirmRepository;
 import de.propadmin.rentalmanager.repositories.FrameworkContractRepository;
+import de.propadmin.rentalmanager.repositories.AppUserRepository;
 import de.propadmin.rentalmanager.service.ContractService;
 import de.propadmin.rentalmanager.service.LandlordService;
 import de.propadmin.rentalmanager.service.RealEstateObjectService;
@@ -34,7 +35,6 @@ import de.propadmin.rentalmanager.service.TenantService;
 import de.propadmin.rentalmanager.service.TicketService;
 import de.propadmin.rentalmanager.utils.GeocodeResponse;
 import de.propadmin.rentalmanager.utils.GeocodeUtils;
-
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -62,6 +62,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private TicketService ticketService;
+
+    @Autowired
+    private AppUserRepository userRepository;
 
     @Value("${propadmin.data-initializer.enabled:false}")
     private boolean dataInitializerEnabled;
@@ -93,6 +96,7 @@ public class DataInitializer implements CommandLineRunner {
         //userAccount1.setRole("LANDLORD");
         landlord1.setUserAccount(userAccount1);
 
+        userRepository.save(userAccount1);
         landlordService.createLandlord(landlord1);
 
         // Create a real estate object (property)
@@ -168,6 +172,7 @@ public class DataInitializer implements CommandLineRunner {
         tenant1.setBic("COBADEFFXXX");
         tenant1.setNumberOfOccupants(2);
         tenant1.setMoveInDate(LocalDate.of(2023, 1, 1));
+        userRepository.save(tenantUserAccount);
         tenantService.createTenant(tenant1);
 
         // Create a contract
@@ -230,6 +235,8 @@ public class DataInitializer implements CommandLineRunner {
         contactPerson2.setUserAccount(contactPerson2UserAccount);
 
         // Save contact persons
+        userRepository.save(contactPerson1UserAccount);
+        userRepository.save(contactPerson2UserAccount);
         craftsmanFirm1.setContactPersons(Arrays.asList(contactPerson1, contactPerson2));
         craftsmanFirmRepository.save(craftsmanFirm1);
 
