@@ -15,14 +15,18 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
 import de.propadmin.rentalmanager.models.AppUser;
 import de.propadmin.rentalmanager.repositories.AppUserRepository;
 import de.propadmin.rentalmanager.utils.exeptions.UsernameNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
+@Slf4j
 public class AuthorizationServerConfig {
 
     private final PasswordEncoder passwordEncoder;
@@ -38,6 +42,23 @@ public class AuthorizationServerConfig {
         // Initialize the OAuth2 Authorization Server configurer
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
+        authorizationServerConfigurer
+            .authorizationEndpoint(endpoint -> {
+                log.debug("Configuring authorization endpoint");
+                endpoint.errorResponseHandler((request, response, exception) -> {
+                    if (exception instanceof OAuth2AuthenticationException) {
+                        OAuth2AuthenticationException oAuth2Exception = (OAuth2AuthenticationException) exception;
+                        OAuth2Error error = oAuth2Exception.getError();
+                        log.error("Authorization error: {}", error.getDescription());
+                        log.error("Error code: {}", error.getErrorCode());
+                        response.sendRedirect("/login?error=" + error.getErrorCode());
+                    } else {
+                        log.error("Unexpected error: {}", exception.getMessage());
+                        response.sendRedirect("/login?error=server_error");
+                    }
+                });
+            });
+
         // Apply the Authorization Server configuration
         http.apply(authorizationServerConfigurer);
         
@@ -45,7 +66,7 @@ public class AuthorizationServerConfig {
             .oidc(Customizer.withDefaults()); // Enables OpenID Connect 1.0 support
             
             http
-            .securityMatcher("/oauth2/**") // Apply this filter chain only to OAuth2-related endpoints            
+            .securityMatcher("/oauth2/**", "/.well-known/**") // Apply this filter chain only to OAuth2-related endpoints            
             //.cors(cors -> cors.disable()) // Disable CORS for OAuth2 endpoints
             .cors(Customizer.withDefaults()) // Enable CORS for OAuth2 endpoints
             .csrf(csrf -> csrf.disable())
@@ -53,6 +74,7 @@ public class AuthorizationServerConfig {
                 .requestMatchers("/oauth2/token").permitAll() // Allow public access to the token endpoint
                 .requestMatchers("/oauth2/jwks").permitAll()  // Allow public access to JWKS
                 .requestMatchers("/oauth2/authorize").authenticated() // Secure authorization endpoint
+                .requestMatchers("/.well-known/**").permitAll() // Allow public access to the well-known endpoint
                 .anyRequest().authenticated()                         // Secure any other endpoints
             )
             .csrf(csrf -> csrf.ignoringRequestMatchers("/oauth2/token", "/login")) // Disable CSRF for token endpoint
@@ -89,7 +111,7 @@ public class AuthorizationServerConfig {
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri("http://localhost:5173")
+            .redirectUri("http://localhost:5173/")
             .scope("openid")
             .scope("profile")
             .build();
