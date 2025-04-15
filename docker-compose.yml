@@ -1,0 +1,51 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+volumes:
+      - ./backend/src:/app/src  # Fixed the path (removed dot)
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://db:3306/landlord_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - APP_RUNTYPE=dev
+
+  data_viz:
+    build:
+      context: .
+      dockerfile: docker/data_viz_service/Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/react_frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+      - data_viz
+    environment:
+      - APP_RUNTYPE=dev=value
+
+
+  db:
+    image: mariadb:10.6
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=landlord_db
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
