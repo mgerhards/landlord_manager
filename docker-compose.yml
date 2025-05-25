@@ -1,0 +1,62 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: spring_backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/app_db
+      SPRING_DATASOURCE_USERNAME: app_user
+      SPRING_DATASOURCE_PASSWORD: app_pass
+      OAUTH2_SERVER_URL: http://auth-server:8080/realms/myrealm
+    depends_on:
+      - db
+      - auth-server
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/react_frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - APP_RUNTYPE=dev=value
+
+
+  db:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_pass
+    volumes:
+      - ./docker/db/db_data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - "3306:3306"
+  
+  auth-server:
+    image: quay.io/keycloak/keycloak:24.0.3
+    container_name: auth_server
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: mariadb
+      KC_DB_URL_HOST: db
+      KC_DB_URL_DATABASE: app_db
+      KC_DB_USERNAME: app_user
+      KC_DB_PASSWORD: app_pass
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+
+volumes:
+  mariadb_data:
