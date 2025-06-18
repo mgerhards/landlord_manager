@@ -3,17 +3,23 @@ package de.propadmin.rentalmanager.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Landlord extends UserAccount {
+public class Landlord {
 
+    @Id
+    private Long id;
+    private UserAccount userAccount;
     private String name;
     private String phoneNumber;
 
