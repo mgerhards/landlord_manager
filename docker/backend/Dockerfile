@@ -1,13 +1,14 @@
-FROM maven:3.9-amazoncorretto-21
+# Use an official Java runtime as a base image
+FROM openjdk:17-jdk-slim
 
+# Set the working directory
 WORKDIR /app
 
-# Change COPY to reference backend directory from root context
-COPY backend/ .
+# Copy the pre-built JAR file into the container
+COPY ./target/rental-manager-0.0.1-SNAPSHOT.jar rental-manager.jar
 
+# Expose the backend port
 EXPOSE 8080
 
-RUN ls -la
-
-# Build and run the application using Maven directly
-CMD ["mvn", "spring-boot:run"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "rental-manager.jar"]

@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: ../docker/backend/Dockerfile
     ports:
       - "8080:8080" # Backend API
       - "5005:5005" # Debugging port
@@ -14,14 +14,17 @@ services:
       - SPRING_DATASOURCE_PASSWORD=root
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
-      - ./backend:/app
+      - ./backend:/app # Mount local backend code into the container
+      - ~/.m2:/root/.m2 # Cache Maven dependencies for faster builds
     depends_on:
       - db
+    command: bash -c "mvn clean package && java -jar target/rental-manager-0.0.1-SNAPSHOT.jar"
+
 
   frontend:
     build:
       context: ./react_frontend
-      dockerfile: Dockerfile
+      dockerfile: ../docker/react_frontend/Dockerfile
     ports:
       - "5173:5173" # Frontend server
     environment:
