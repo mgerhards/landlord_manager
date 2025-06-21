@@ -19,6 +19,15 @@ services:
       - db
     command: bash -c "mvn spring-boot:run -Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'"
 
+  frontend:
+    build:
+      context: ./react_frontend
+      dockerfile: ../docker/react_frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8080/api
+
   db:
     image: mariadb:11
     environment:
