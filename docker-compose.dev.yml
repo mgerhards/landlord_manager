@@ -3,41 +3,29 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend
-      dockerfile: ../docker/backend/Dockerfile
+      context: .
+      dockerfile: docker/backend/Dockerfile
     ports:
-      - "8080:8080" # Backend API
-      - "5005:5005" # Debugging port
+      - "8080:8080"
+      - "5005:5005"
+    volumes:
+      - ./backend:/app
+    working_dir: /app
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mariadb://db:3306/landlord
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
-      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
-    volumes:
-      - ./backend:/app # Mount local backend code into the container
-      - ~/.m2:/root/.m2 # Cache Maven dependencies for faster builds
     depends_on:
       - db
-    command: bash -c "mvn clean package && java -jar target/rental-manager-0.0.1-SNAPSHOT.jar"
-
-
-  frontend:
-    build:
-      context: ./react_frontend
-      dockerfile: ../docker/react_frontend/Dockerfile
-    ports:
-      - "5173:5173" # Frontend server
-    environment:
-      - VITE_API_URL=http://localhost:8080/api
-    volumes:
-      - ./frontend:/app
-    command: npm run dev
+    command: bash -c "mvn spring-boot:run -Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'"
 
   db:
-    image: mariadb:10.6
-    container_name: landlord_db
-    ports:
-      - "3306:3306"
+    image: mariadb:11
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=landlord
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: landlord
+    volumes:
+      - db_data:/var/lib/mysql
+  
+volumes:
+  db_data:

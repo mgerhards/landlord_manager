@@ -9,6 +9,13 @@
             "projectName": "rental-manager",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Attach to Docker Backend",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 5005
         }
     ]
 }

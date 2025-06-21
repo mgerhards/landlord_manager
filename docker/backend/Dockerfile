@@ -1,14 +1,14 @@
-# Use an official Java runtime as a base image
-FROM openjdk:17-jdk-slim
+FROM maven:3.9.6-eclipse-temurin-21
 
-# Set the working directory
 WORKDIR /app
 
-# Copy the pre-built JAR file into the container
-COPY ./target/rental-manager-0.0.1-SNAPSHOT.jar rental-manager.jar
+# Copy pom.xml and pre-fetch dependencies
+COPY ../../backend/pom.xml ./
+RUN mvn dependency:go-offline
 
-# Expose the backend port
-EXPOSE 8080
+# Copy source (mounted later anyway)
+COPY ../../backend /app
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "rental-manager.jar"]
+EXPOSE 8080 5005
+
+CMD ["bash"]
