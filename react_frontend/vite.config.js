@@ -6,6 +6,19 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  preview: {
+    host: true,
+    port: 4173,
+    strictPort: true,
+  },
+  server: {
+    host: true,
+    port: 4173,
+    strictPort: true,
+    watch: {
+      usePolling: true,
+    }
+  },
   plugins: [react(),
     viteStaticCopy({
       targets: [

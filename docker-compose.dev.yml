@@ -24,9 +24,13 @@ services:
       context: ./react_frontend
       dockerfile: ../docker/react_frontend/Dockerfile
     ports:
-      - "5173:5173"
+      - "4173:4173"
     environment:
       - VITE_API_URL=http://localhost:8080/api
+    command: npm run preview -- --host 0.0.0.0
+    volumes:
+      - ./react_frontend:/app
+      - /app/node_modules
 
   db:
     image: mariadb:11
