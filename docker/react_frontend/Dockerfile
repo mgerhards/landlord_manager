@@ -11,11 +11,8 @@ RUN npm install
 # Copy the rest of the frontend code
 COPY . .
 
-# Build the frontend
-RUN npm run build
-
 # Expose the frontend port
 EXPOSE 5173
 
 # Start the frontend server
-CMD ["npm", "run", "preview"]
+CMD ["npm", "run", "dev"]
