@@ -20,6 +20,7 @@ import de.propadmin.rentalmanager.models.Landlord;
 import de.propadmin.rentalmanager.models.RealEstateObject;
 import de.propadmin.rentalmanager.models.Tenant;
 import de.propadmin.rentalmanager.models.Ticket;
+import de.propadmin.rentalmanager.models.UserAccount;
 import de.propadmin.rentalmanager.models.enums.HeatingType;
 import de.propadmin.rentalmanager.models.enums.PaymentMethod;
 import de.propadmin.rentalmanager.models.enums.PropertyType;
@@ -27,6 +28,7 @@ import de.propadmin.rentalmanager.models.enums.TicketStatus;
 import de.propadmin.rentalmanager.models.enums.TradeType;
 import de.propadmin.rentalmanager.repositories.CraftsmanFirmRepository;
 import de.propadmin.rentalmanager.repositories.FrameworkContractRepository;
+import de.propadmin.rentalmanager.repositories.UserRepository;
 import de.propadmin.rentalmanager.service.ContractService;
 import de.propadmin.rentalmanager.service.LandlordService;
 import de.propadmin.rentalmanager.service.RealEstateObjectService;
@@ -38,6 +40,9 @@ import de.propadmin.rentalmanager.utils.GeocodeUtils;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -81,10 +86,14 @@ public class DataInitializer implements CommandLineRunner {
 
         // Create a landlord
         Landlord landlord1 = new Landlord();
+        // Create and set UserAccount for landlord
+        de.propadmin.rentalmanager.models.UserAccount landlordAccount = new de.propadmin.rentalmanager.models.UserAccount();
+        landlordAccount.setEmail("info@gendis.de");
+        landlordAccount.setPassword(passwordEncoder.encode("password"));
+        landlordAccount = userRepository.save(landlordAccount);     
+        landlord1.setUserAccount(landlordAccount);
         landlord1.setName("John Doe");
-        landlord1.setEmail("info@gendis.de");
-        String hashedPassword = passwordEncoder.encode("password");
-        landlord1.setPassword(hashedPassword);
+                
         landlord1.setPhoneNumber("555-1234");
         landlord1.setLicenseKey("LICENSE-1234-5678-9012");
         landlord1.setLicenseExpirationDate(LocalDate.of(2030, 12, 31)); // License valid until 2030
@@ -143,8 +152,14 @@ public class DataInitializer implements CommandLineRunner {
 
         // Create a tenant
         Tenant tenant1 = new Tenant();
+        // Create and set UserAccount for tenant
+        UserAccount tenantAccount = new UserAccount();
+        tenantAccount.setEmail("jane.smith@example.com");
+        tenantAccount.setPassword(passwordEncoder.encode("password"));
+        tenantAccount = userRepository.save(tenantAccount); 
+
+        tenant1.setUserAccount(tenantAccount);
         tenant1.setName("Jane Smith");
-        tenant1.setEmail("jane.smith@example.com");
         tenant1.setPhoneNumber("555-6789");
         tenant1.setDateOfBirth(LocalDate.of(1985, 6, 15));
         tenant1.setIdNumber("ID123456789");
@@ -200,15 +215,25 @@ public class DataInitializer implements CommandLineRunner {
 
         // Create contact persons for the craftsman firm
         ContactPerson contactPerson1 = new ContactPerson();
+        // Create and set UserAccount for contactPerson1
+        UserAccount contactPersonAccount = new UserAccount();
+        contactPersonAccount.setEmail("hans.roehrich@roehrich-gmbh.de");
+        contactPersonAccount.setPassword(passwordEncoder.encode("password"));
+        contactPersonAccount = userRepository.save(contactPersonAccount); 
+        
+        contactPerson1.setUserAccount(contactPersonAccount);
         contactPerson1.setName("Hans Röhrich");
-        contactPerson1.setEmail("hans.roehrich@roehrich-gmbh.de");
         contactPerson1.setPhoneNumber("+49 30 12345678");
         contactPerson1.setRole(ContactPerson.Role.CRAFTSMAN);
         contactPerson1.setCraftsmanFirm(craftsmanFirm1);
 
         ContactPerson contactPerson2 = new ContactPerson();
+        // Create and set UserAccount for contactPerson2
+        UserAccount contactPerson2Account = new UserAccount();
+        contactPerson2Account.setEmail("anna.mueller@roehrich-gmbh.de");
+        contactPerson2Account.setPassword(passwordEncoder.encode("password"));
+        contactPerson2.setUserAccount(contactPerson2Account);
         contactPerson2.setName("Anna Müller");
-        contactPerson2.setEmail("anna.mueller@roehrich-gmbh.de");
         contactPerson2.setPhoneNumber("+49 30 87654321");
         contactPerson2.setRole(ContactPerson.Role.ADMINISTRATIVE_PERSONNEL);
         contactPerson2.setCraftsmanFirm(craftsmanFirm1);
