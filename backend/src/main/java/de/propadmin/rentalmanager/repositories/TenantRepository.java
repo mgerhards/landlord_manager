@@ -7,5 +7,5 @@ import de.propadmin.rentalmanager.models.Tenant;
 
 @RepositoryRestResource(path = "tenants")
 public interface TenantRepository extends JpaRepository<Tenant, Long> {
-    // Additional custom queries can be defined here if needed
+    Tenant findByUserAccountEmail(String email);
 }
