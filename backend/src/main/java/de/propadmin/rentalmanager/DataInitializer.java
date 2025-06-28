@@ -23,6 +23,7 @@ import de.propadmin.rentalmanager.models.Ticket;
 import de.propadmin.rentalmanager.models.enums.HeatingType;
 import de.propadmin.rentalmanager.models.enums.PaymentMethod;
 import de.propadmin.rentalmanager.models.enums.PropertyType;
+import de.propadmin.rentalmanager.models.enums.TicketStatus;
 import de.propadmin.rentalmanager.models.enums.TradeType;
 import de.propadmin.rentalmanager.repositories.CraftsmanFirmRepository;
 import de.propadmin.rentalmanager.repositories.FrameworkContractRepository;
@@ -248,7 +249,7 @@ public class DataInitializer implements CommandLineRunner {
         // Create a ticket for a tenant issue
         Ticket ticket1 = new Ticket();
         ticket1.setDescription("Water leak in the kitchen");
-        ticket1.setStatus("OPEN");
+        ticket1.setStatus(TicketStatus.OPEN);
         ticket1.setCreationDate(LocalDateTime.now());
         ticket1.setTenant(tenant1);
         ticket1.setLandlord(landlord1);
