@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import "./App.css"
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import RealEstateOverview from './components/RealEstate/Overview.jsx';
 import TennantsOverview from './components/tennants/Overview';
 import CompaniesOverview from './components/companies/Overview';
 import TicketsOverview from './components/tickets/Overview';
+import TicketCreate from './components/tickets/TicketCreate';
 import RealEstateDetails from './components/RealEstate/Details';
 import Login from './Login';
 
@@ -81,6 +82,7 @@ const App = () => {
             <Route path="/tennants" element={<TennantsOverview />} />
             <Route path="/companies" element={<CompaniesOverview />} />
             <Route path="/tickets" element={<TicketsOverview />} />
+            <Route path="/tickets/create" element={<TicketCreate />} />
           </Routes>
         </div>
       </div>

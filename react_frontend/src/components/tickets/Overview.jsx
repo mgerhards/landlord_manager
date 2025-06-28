@@ -1,24 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ENDPOINTS } from '../../config/api';
 
 const TicketsOverview = () => {
+    const navigate = useNavigate();
     const [tickets, setTickets] = useState([]);
 
     useEffect(() => {
-        fetch(ENDPOINTS.TICKETS, {
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json'
+        const fetchTickets = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(ENDPOINTS.TICKETS, {
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    setTickets(data._embedded?.tickets || []);
+                } else {
+                    console.error('Failed to fetch tickets');
+                }
+            } catch (error) {
+                console.error('Error fetching tickets:', error);
             }
-        })        
-        .then(response => response.json())
-        .then(data => setTickets(data._embedded.tickets))
-        .catch(error => console.error('Error fetching tickets:', error));;;
-    }); 
+        };
+
+        fetchTickets();
+    }, []); 
+
+    const handleCreateTicket = () => {
+        navigate('/tickets/create');
+    };
 
     return (
         <div className="container">
-            <h2>Tickets</h2>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <h2>Tickets</h2>
+                <button 
+                    className="btn btn-primary"
+                    onClick={handleCreateTicket}
+                >
+                    <i className="bi bi-plus"></i> Create Ticket
+                </button>
+            </div>
             <div className="table-responsive">
                 <table className="table table-striped">
                     <thead>
@@ -35,7 +63,7 @@ const TicketsOverview = () => {
                                 <td>{ticket.id}</td>
                                 <td>{ticket.description}</td>
                                 <td>{ticket.status}</td>
-                                <td>{ticket.createdAt}</td>
+                                <td>{ticket.creationDate ? new Date(ticket.creationDate).toLocaleDateString() : '-'}</td>
                             </tr>
                         ))}
                     </tbody>
