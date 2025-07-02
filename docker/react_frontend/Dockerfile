@@ -14,5 +14,4 @@ COPY . .
 # Expose the frontend port
 EXPOSE 5173
 
-# Start the frontend server
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
