@@ -84,6 +84,11 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("Data initializer is enabled");
         }
 
+        if (userRepository.count() > 0 || landlordService.count() > 0 || realEstateObjectService.count() > 0) {
+            System.out.println("Database is not empty, skipping data initialization.");
+            return;
+        }
+
         // Create a landlord
         Landlord landlord1 = new Landlord();
         // Create and set UserAccount for landlord
