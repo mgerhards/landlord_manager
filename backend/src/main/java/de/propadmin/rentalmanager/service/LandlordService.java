@@ -30,4 +30,8 @@ public class LandlordService {
     public void deleteLandlord(Long id) {
         landlordRepository.deleteById(id);
     }
+
+    public Long count() {
+        return landlordRepository.count();
+    }
 }

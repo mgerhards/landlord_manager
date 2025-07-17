@@ -78,4 +78,8 @@ public class RealEstateObjectService {
     public void deleteRealEstateObject(Long id) {
         realEstateObjectRepository.deleteById(id);
     }
+
+    public Long count() {
+        return realEstateObjectRepository.count();
+    }
 }
