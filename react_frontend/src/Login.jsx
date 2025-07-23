@@ -1,29 +1,35 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, setError }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:8080/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            credentials: 'include', // Include credentials to handle cookies
-            body: new URLSearchParams({
-                username,
-                password,
-            }),
-        });
-
-        if (response.ok) {
-            const token = await response.text(); // Assuming the token is returned as plain text
-            setToken(token);
-        } else {
-            console.error('Login failed');
+        
+        try {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                credentials: 'include', // Include credentials to handle cookies
+                body: new URLSearchParams({
+                    username,
+                    password,
+                }),
+            });
+            
+            if (response.ok) {
+                const token = await response.text(); // Assuming the token is returned as plain text
+                setToken(token);
+            } else {
+                setError('Login failed. Please check your credentials.');
+            }
+        } catch (error) {
+            setError('Network error. Please try again.');
+            console.error('Login error:', error);
         }
     };
 
@@ -56,7 +62,8 @@ const Login = ({ setToken }) => {
 };
 
 Login.propTypes = {
-    setIsAuthenticated: PropTypes.func.isRequired,
+    setToken: PropTypes.func.isRequired,
+    setError: PropTypes.func.isRequired,
 };
 
 export default Login;
