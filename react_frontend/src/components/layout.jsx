@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
     <div className="wrapper">
       <Sidebar />
       <div className="content-wrapper">
-        <div class="container-fluid">
+        <div className="container-fluid">
           {/* Header */}
           <nav className="main-header navbar navbar-expand navbar-white navbar-light">
             <ul className="navbar-nav">
