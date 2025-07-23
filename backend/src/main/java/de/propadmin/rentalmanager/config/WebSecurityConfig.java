@@ -1,6 +1,7 @@
 package de.propadmin.rentalmanager.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,14 +13,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import com.nimbusds.jose.jwk.source.ImmutableSecret;
+
 import de.propadmin.rentalmanager.models.UserAccount;
 import de.propadmin.rentalmanager.repositories.UserRepository;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.util.List;
 
 
@@ -29,6 +35,9 @@ public class WebSecurityConfig {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +52,7 @@ public class WebSecurityConfig {
                 ).permitAll()
                 .anyRequest().authenticated()
             )
-            .headers(headers -> headers.frameOptions().sameOrigin());
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
 
         return http.build();
     }
@@ -98,5 +107,11 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtEncoder jwtEncoder() {
+        SecretKeySpec secretKey = new SecretKeySpec(jwtSecret.getBytes(), "HmacSHA256");
+        return new NimbusJwtEncoder(new ImmutableSecret<>(secretKey));
     }
 }

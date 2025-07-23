@@ -1,6 +1,5 @@
 package de.propadmin.rentalmanager.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
+import de.propadmin.rentalmanager.service.JwtService;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager) {
+    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     @GetMapping("/test")
@@ -46,12 +45,11 @@ public class AuthController {
             // If authentication was successful, set the authentication in the security context
             SecurityContextHolder.getContext().setAuthentication(authentication);
             
-            // Return a success response
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Login successful");
-            response.put("username", username);
+            // Generate JWT token
+            String token = jwtService.generateToken(authentication);
             
-            return ResponseEntity.ok(response);
+            // Return the JWT token as plain text (as expected by the frontend)
+            return ResponseEntity.ok(token);
         } catch (BadCredentialsException e) {
             System.out.println("Bad credentials for user: " + username);
             return ResponseEntity.status(401).body("Invalid username or password");
