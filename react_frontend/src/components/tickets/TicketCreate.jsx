@@ -75,10 +75,11 @@ const TicketCreate = () => {
                 asset: formData.assetId ? { id: formData.assetId } : null
             };
 
-            const response = await fetch('http://localhost:8080/api/tickets', {
+            const response = await fetch(`${ENDPOINTS.TICKETS}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
                 credentials: 'include',
