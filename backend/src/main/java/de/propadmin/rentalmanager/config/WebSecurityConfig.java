@@ -56,12 +56,22 @@ public class WebSecurityConfig {
                     "/",
                     "/api/auth/**",
                     "/h2-console/**",
-                    "/error"
+                    "/error",
+                    "/favicon.ico"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder())))
-            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwt -> jwt
+                    .decoder(jwtDecoder())
+                    // Optional: Add custom JWT authentication converter if needed
+                )
+            )
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
+            // Add session management to make it stateless (recommended for JWT)
+            .sessionManagement(session -> session.sessionCreationPolicy(
+                org.springframework.security.config.http.SessionCreationPolicy.STATELESS
+            ));
 
         return http.build();
     }
@@ -69,7 +79,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4173", "http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of(

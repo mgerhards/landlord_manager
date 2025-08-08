@@ -1,36 +1,23 @@
 package de.propadmin.rentalmanager.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
 
-import java.time.Instant;
-
+import java.util.Date;
 
 @Service
 public class JwtService {
-
-    private final JwtEncoder jwtEncoder;
-
-    @Value("${jwt.expiration:3600}")
-    private long jwtExpiration;
-
-    public JwtService(JwtEncoder jwtEncoder) {
-        this.jwtEncoder = jwtEncoder;
-    }
+    private final String jwtSecret = "your-very-strong-secret-key"; // Use env/config in production
+    private final long jwtExpirationMs = 86400000; // 1 day
 
     public String generateToken(Authentication authentication) {
-      Instant now = Instant.now();
-        
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .subject(authentication.getName())
-                .issuedAt(now)
-                .expiresAt(now.plusSeconds(jwtExpiration))
-                .build();
-        
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 }
