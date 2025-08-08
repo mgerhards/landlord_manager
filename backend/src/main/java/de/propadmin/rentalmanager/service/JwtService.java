@@ -1,23 +1,41 @@
 package de.propadmin.rentalmanager.service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class JwtService {
-    private final String jwtSecret = "your-very-strong-secret-key"; // Use env/config in production
-    private final long jwtExpirationMs = 86400000; // 1 day
+    
+    @Autowired
+    private JwtEncoder jwtEncoder;
+    
+    @Value("${jwt.expiration:86400}") // Default: 24 hours in seconds
+    private long jwtExpirationSeconds;
 
+    /**
+     * Generate a JWT token for the authenticated user
+     * @param authentication Spring Security Authentication object
+     * @return JWT token as string
+     */
     public String generateToken(Authentication authentication) {
-        return Jwts.builder()
-                .setSubject(authentication.getName())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+        Instant now = Instant.now();
+        
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("landlord-manager") // Your application name
+                .issuedAt(now)
+                .expiresAt(now.plus(jwtExpirationSeconds, ChronoUnit.SECONDS))
+                .subject(authentication.getName())
+                .claim("scope", "USER") // You can add more claims as needed
+                .build();
+
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }

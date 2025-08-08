@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ENDPOINTS } from '../../config/api';
+import { apiCall } from '../../config/auth';
 
 const TicketCreate = () => {
     const navigate = useNavigate();
@@ -18,27 +19,19 @@ const TicketCreate = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const headers = {
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                };
-
                 // Fetch tenants
-                const tenantsResponse = await fetch(ENDPOINTS.TENNANTS, {
-                    headers,
-                    credentials: 'include'
-                });
+                const tenantsResponse = await apiCall(ENDPOINTS.TENANT_ENTITIES, {
+                    method: 'GET'
+                }, navigate);
                 if (tenantsResponse.ok) {
                     const tenantsData = await tenantsResponse.json();
                     setTenants(tenantsData._embedded?.tenants || []);
                 }
 
                 // Fetch real estate objects
-                const assetsResponse = await fetch(ENDPOINTS.REAL_ESTATE, {
-                    headers,
-                    credentials: 'include'
-                });
+                const assetsResponse = await apiCall(ENDPOINTS.REAL_ESTATE, {
+                    method: 'GET'
+                }, navigate);
                 if (assetsResponse.ok) {
                     const assetsData = await assetsResponse.json();
                     setAssets(assetsData._embedded?.realEstateObjects || []);
@@ -50,7 +43,7 @@ const TicketCreate = () => {
         };
 
         fetchData();
-    }, []);
+    }, [navigate]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -66,8 +59,6 @@ const TicketCreate = () => {
         setError('');
 
         try {
-            const token = localStorage.getItem('token');
-            
             // Prepare ticket data for backend
             const ticketData = {
                 description: formData.description,
@@ -75,16 +66,10 @@ const TicketCreate = () => {
                 asset: formData.assetId ? { id: formData.assetId } : null
             };
 
-            const response = await fetch(`${ENDPOINTS.TICKETS}`, {
+            const response = await apiCall(ENDPOINTS.TICKETS, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                credentials: 'include',
                 body: JSON.stringify(ticketData)
-            });
+            }, navigate);
 
             if (response.ok) {
                 // Success - redirect to tickets overview

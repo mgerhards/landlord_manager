@@ -1,35 +1,25 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { login } from './config/auth.js';
 
 const Login = ({ setToken, setError }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setError('');
         
         try {
-            const response = await fetch('http://localhost:8080/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                credentials: 'include', // Include credentials to handle cookies
-                body: new URLSearchParams({
-                    username,
-                    password,
-                }),
-            });
-            
-            if (response.ok) {
-                const token = await response.text(); // Assuming the token is returned as plain text
-                setToken(token);
-            } else {
-                setError('Login failed. Please check your credentials.');
-            }
+            const token = await login(username, password);
+            setToken(token);
         } catch (error) {
-            setError('Network error. Please try again.');
+            setError(error.message || 'Login failed. Please check your credentials.');
             console.error('Login error:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -42,17 +32,37 @@ const Login = ({ setToken, setError }) => {
                         <h3 className='card-title'>Login</h3>
                     </div>
                     <div className='card-body'>
-                        <div>
+                        <div className="form-group mb-3">
                             <label className="form-label">Username:</label>
-                            <input className="form-control" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                            <input 
+                                className="form-control" 
+                                type="text" 
+                                value={username} 
+                                onChange={(e) => setUsername(e.target.value)}
+                                disabled={loading}
+                                required 
+                            />
                         </div>
-                        <div>
+                        <div className="form-group mb-3">
                             <label className="form-label">Password:</label>
-                            <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input 
+                                className="form-control" 
+                                type="password" 
+                                value={password} 
+                                onChange={(e) => setPassword(e.target.value)}
+                                disabled={loading}
+                                required 
+                            />
                         </div>
                     </div>
                     <div className='card-footer'>
-                        <button className="btn btn-primary" type="submit">Login</button>
+                        <button 
+                            className="btn btn-primary" 
+                            type="submit"
+                            disabled={loading}
+                        >
+                            {loading ? 'Logging in...' : 'Login'}
+                        </button>
                     </div>
                 </div>
             </div>

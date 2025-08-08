@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ENDPOINTS } from '../../config/api';
+import { apiCall } from '../../config/auth';
 
 const RealEstateForm = () => {
   const navigate = useNavigate();
@@ -82,15 +83,10 @@ const RealEstateForm = () => {
       
       const method = isEdit ? 'PUT' : 'POST';
 
-      const response = await fetch(url, {
+      const response = await apiCall(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        credentials: 'include',
         body: JSON.stringify(formData)
-      });
+      }, navigate);
 
       if (response.ok) {
         navigate('/real-estate', { 

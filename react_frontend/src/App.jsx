@@ -1,21 +1,25 @@
 import { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
+import Sidebar from './components/Sidebar.jsx';
+import Header from './components/Header.jsx';
 import "./App.css"
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import RealEstateOverview from './components/RealEstate/Overview.jsx';
 import RealEstateForm from './components/RealEstate/Form.jsx';
-import TennantsOverview from './components/tennants/Overview';
-import CompaniesOverview from './components/companies/Overview';
-import TicketsOverview from './components/tickets/Overview';
-import TicketCreate from './components/tickets/TicketCreate';
-import RealEstateDetails from './components/RealEstate/Details';
-import Login from './Login';
+import TennantsOverview from './components/tennants/Overview.jsx';
+import CompaniesOverview from './components/companies/Overview.jsx';
+import TicketsOverview from './components/tickets/Overview.jsx';
+import TicketCreate from './components/tickets/TicketCreate.jsx';
+import RealEstateDetails from './components/RealEstate/Details.jsx';
+import Login from './Login.jsx';
+import { isAuthenticated, verifyToken, logout, apiCall } from './config/auth.js';
+import { ENDPOINTS } from './config/api.js';
 
 const Home = () => <h3>Home</h3>;
 
 const App = () => {
+  const navigate = useNavigate();
+  
   useEffect(() => {
     // Initialize AdminLTE components if necessary
     import('admin-lte');
@@ -24,16 +28,39 @@ const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [realEstateObject, setRealEstateObject] = useState(null);
   const [error, setError] = useState(null);
+  const [isTokenValid, setIsTokenValid] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  // Verify token validity on app start
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      if (isAuthenticated()) {
+        try {
+          const valid = await verifyToken();
+          setIsTokenValid(valid);
+          if (!valid) {
+            setToken(null);
+          }
+        } catch (error) {
+          console.error('Auth check failed:', error);
+          setIsTokenValid(false);
+          setToken(null);
+        }
+      } else {
+        setIsTokenValid(false);
+      }
+      setIsCheckingAuth(false);
+    };
+
+    checkAuthentication();
+  }, []);
 
   const loadRealEstateObject = useCallback(async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/realestate/${id}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await apiCall(`${ENDPOINTS.REAL_ESTATE_API}/${id}`, {
+        method: 'GET'
+      }, navigate);
+      
       if (response.ok) {
         const data = await response.json();
         setRealEstateObject(data);
@@ -45,24 +72,53 @@ const App = () => {
       setError('Error: ' + error.message);
       console.error('Error:', error);
     }
-  }, [token, setError]);
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setToken(null);
+      setIsTokenValid(false);
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Force logout even if API call fails
+      setToken(null);
+      setIsTokenValid(false);
+      navigate('/');
+    }
+  };
 
   useEffect(() => {
     const id = window.location.pathname.split('/').pop();
-    if (id) {
+    if (id && isTokenValid) {
       loadRealEstateObject(id);
+    }
+  }, [isTokenValid, loadRealEstateObject]);
+
+  useEffect(() => {
+    if (token && token !== "undefined" && token !== "") {
+      localStorage.setItem('token', token);
+      setIsTokenValid(true);
+    } else {
+      localStorage.removeItem('token');
+      setIsTokenValid(false);
     }
   }, [token]);
 
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem('token', token);
-    } else {
-      localStorage.removeItem('token');
-    }
-  }, [token, loadRealEstateObject]);
+  // Show loading while checking authentication
+  if (isCheckingAuth) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
-  if (!token && token !== "undefined" && token !=="") {
+  // Show login if not authenticated
+  if (!isTokenValid) {
     return (
       <div className="app-wrapper sidebar-expand-lg bg-body-tertiary sidebar-open">
         {error && <ErrorPanel message={error} onClose={() => setError(null)} />}
@@ -79,7 +135,7 @@ const App = () => {
   return (
       <div className="app-wrapper sidebar-expand-lg bg-body-tertiary sidebar-open">
         {error && <ErrorPanel message={error} onClose={() => setError(null)} />}
-        <Header />
+        <Header onLogout={handleLogout} />
         <Sidebar />
         <div className="content-wrapper">
           <Routes>
