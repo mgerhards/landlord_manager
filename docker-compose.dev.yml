@@ -26,7 +26,7 @@ services:
     ports:
       - "4173:4173"
     environment:
-      - VITE_API_URL=http://localhost:8080/api
+      - VITE_API_URL=http://localhost:8080
       - HOST=0.0.0.0
       - PORT=4173
     command: sh -c "npm run dev -- --host 0.0.0.0 --port 4173"
