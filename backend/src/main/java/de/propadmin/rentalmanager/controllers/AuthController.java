@@ -42,7 +42,9 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body("Invalid credentials");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Authentication failed");
+            // Log the full exception to help identify the issue
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Authentication failed: " + e.getMessage());
         }
     }
 
