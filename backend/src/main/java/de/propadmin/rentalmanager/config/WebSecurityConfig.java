@@ -22,14 +22,23 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.UUID;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.OctetSequenceKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
 
 import de.propadmin.rentalmanager.models.UserAccount;
 import de.propadmin.rentalmanager.repositories.UserRepository;
-
-import javax.crypto.spec.SecretKeySpec;
-import java.util.List;
-
 
 @Configuration
 @EnableWebSecurity
@@ -121,6 +130,12 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        SecretKeySpec secretKey = new SecretKeySpec(jwtSecret.getBytes(), "HmacSHA256");
+        return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }
 
     @Bean
