@@ -1,41 +1,42 @@
 package de.propadmin.rentalmanager.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import java.time.Instant;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
 @Service
 public class JwtService {
-    
-    @Autowired
-    private JwtEncoder jwtEncoder;
-    
-    @Value("${jwt.expiration:86400}") // Default: 24 hours in seconds
-    private long jwtExpirationSeconds;
 
-    /**
-     * Generate a JWT token for the authenticated user
-     * @param authentication Spring Security Authentication object
-     * @return JWT token as string
-     */
+    private final JwtEncoder jwtEncoder;
+
+    public JwtService(JwtEncoder jwtEncoder) {
+        this.jwtEncoder = jwtEncoder;
+    }
+
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
-        
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("landlord-manager") // Your application name
+                .issuer("landlord-manager")
                 .issuedAt(now)
-                .expiresAt(now.plus(jwtExpirationSeconds, ChronoUnit.SECONDS))
+                .expiresAt(now.plusSeconds(3600)) // 1h
                 .subject(authentication.getName())
-                .claim("scope", "USER") // You can add more claims as needed
+                .claim("authorities",
+                        authentication.getAuthorities().stream()
+                                .map(GrantedAuthority::getAuthority)
+                                .collect(Collectors.toList()))
                 .build();
 
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        JwsHeader header = JwsHeader.with(MacAlgorithm.HS256).build();
+        return jwtEncoder.encode(
+                JwtEncoderParameters.from(header, claims)
+        ).getTokenValue();
     }
 }

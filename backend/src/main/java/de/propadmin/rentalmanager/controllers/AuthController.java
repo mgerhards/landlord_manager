@@ -42,6 +42,7 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body("Invalid credentials");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(500).body("Authentication failed");
         }
     }
@@ -61,6 +62,7 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).build();
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(500).build();
         }
     }
