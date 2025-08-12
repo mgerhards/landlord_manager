@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ENDPOINTS } from '../../config/api';
 import OpenDetailsButton from './OpenDetailsButton';
 import { apiCall, getUserIdFromToken} from '../../config/auth';
-import jwt_decode from "jwt-decode";
 
 
 
@@ -30,8 +29,17 @@ const RealEstateOverview = () => {
     };
 
     useEffect(() => {
-        fetchRealEstateObjects();
-    }, []);
+        setLoading(true);
+
+        apiCall(
+            ENDPOINTS.REAL_ESTATE_API + "/landlord/" + userId,
+            { method: 'GET', headers: { 'Accept': 'application/json' } }
+        )
+        .then(response => response.json())
+        .then(data => setRealEstateObjects(data._embedded.realEstateObjects))
+        .catch(error => console.error('Error fetching data:', error))
+        .finally(() => setLoading(false));
+    }, [userId]);
 
     const handleEdit = (obj) => {
         navigate('/real-estate/form', { 
@@ -45,10 +53,10 @@ const RealEstateOverview = () => {
     const handleDelete = async (obj) => {
         if (window.confirm(`Are you sure you want to delete the property at ${obj.address}?`)) {
             try {
-                const response = await fetch(`${ENDPOINTS.REAL_ESTATE_API}/${obj.id}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
+                const response = await apiCall(
+                    `${ENDPOINTS.REAL_ESTATE_API}/${obj.id}`,
+                    { method: 'DELETE' }
+                );
 
                 if (response.ok) {
                     // Refresh the list
