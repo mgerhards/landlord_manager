@@ -4,21 +4,25 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ENDPOINTS } from '../../config/api';
 import OpenDetailsButton from './OpenDetailsButton';
+import { apiCall, getUserIdFromToken} from '../../config/auth';
+import jwt_decode from "jwt-decode";
+
+
 
 const RealEstateOverview = () => {
     const [realEstateObjects, setRealEstateObjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
+    const userId = getUserIdFromToken();
 
     const fetchRealEstateObjects = () => {
         setLoading(true);
-        fetch(ENDPOINTS.REAL_ESTATE, {
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
+
+        apiCall(
+            ENDPOINTS.REAL_ESTATE_API + "/landlord/" + userId,
+            { method: 'GET', headers: { 'Accept': 'application/json' } }
+        )
         .then(response => response.json())
         .then(data => setRealEstateObjects(data._embedded.realEstateObjects))
         .catch(error => console.error('Error fetching data:', error))

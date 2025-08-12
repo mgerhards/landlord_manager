@@ -145,3 +145,18 @@ export const logout = async () => {
         removeToken();
     }
 };
+ /**
+  * Extracts the user id from JWT
+  *
+  * @returns {string|null} The user id or null if not found
+  */
+export const getUserIdFromToken = () => {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const decoded = jwt_decode(token);
+    return decoded.userId || null;
+  } catch (e) {
+    return null;
+  }
+};
