@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
+import de.propadmin.rentalmanager.dto.AppUserDetailsDTO;
 import de.propadmin.rentalmanager.models.UserAccount;
 
 @Service
@@ -52,7 +53,7 @@ public class JwtService {
         Long userId = null;
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails userDetails) {
-            if (userDetails instanceof UserAccount userAccount) {
+            if (userDetails instanceof AppUserDetailsDTO userAccount) {
                 userId = userAccount.getId();
             }
         }

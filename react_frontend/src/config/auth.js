@@ -1,9 +1,6 @@
 import { ENDPOINTS } from './api.js';
-
-/**
- * Utility functions for making authenticated API calls
- */
-
+import {jwtDecode} from 'jwt-decode';
+ 
 /**
  * Get the JWT token from localStorage
  */
@@ -154,7 +151,7 @@ export const getUserIdFromToken = () => {
   const token = getToken();
   if (!token) return null;
   try {
-    const decoded = jwt_decode(token);
+    const decoded = jwtDecode(token);
     return decoded.userId || null;
   } catch (e) {
     return null;

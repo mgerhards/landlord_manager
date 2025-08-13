@@ -22,24 +22,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.UUID;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.jwk.JWK;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.OctetSequenceKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
 
 import de.propadmin.rentalmanager.models.UserAccount;
 import de.propadmin.rentalmanager.repositories.UserRepository;
-
+import de.propadmin.rentalmanager.dto.AppUserDetailsDTO;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -85,11 +74,8 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:4173", "http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setExposedHeaders(List.of(
-            "Access-Control-Allow-Origin",
-            "Access-Control-Allow-Credentials"
-        ));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
+        configuration.setExposedHeaders(List.of("Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 
@@ -110,7 +96,7 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
-
+    
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
@@ -118,12 +104,8 @@ public class WebSecurityConfig {
             if (user == null) {
                 throw new UsernameNotFoundException("User not found: " + username);
             }
-            
-            return org.springframework.security.core.userdetails.User
-                .withUsername(user.getEmail())
-                .password(user.getPassword())
-                .authorities("USER")
-                .build();
+            // Wrap UserAccount in AppUserDetailsDTO for Spring Security
+            return new AppUserDetailsDTO(user);
         };
     }
 
@@ -144,12 +126,4 @@ public class WebSecurityConfig {
         return new NimbusJwtEncoder(new ImmutableSecret<>(secretKey));
     }
 
-    
-    @Bean
-    public JwtDecoder jwtDecoder() {
-        SecretKeySpec secretKey = new SecretKeySpec(jwtSecret.getBytes(), "HmacSHA256");
-        return NimbusJwtDecoder.withSecretKey(secretKey)
-                .macAlgorithm(org.springframework.security.oauth2.jose.jws.MacAlgorithm.HS256)
-                .build();
-    }
 }

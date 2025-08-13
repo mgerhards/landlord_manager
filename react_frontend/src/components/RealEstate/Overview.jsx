@@ -14,18 +14,19 @@ const RealEstateOverview = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const userId = getUserIdFromToken();
-
+ 
     const fetchRealEstateObjects = () => {
-        setLoading(true);
-
-        apiCall(
-            ENDPOINTS.REAL_ESTATE_API + "/landlord/" + userId,
-            { method: 'GET', headers: { 'Accept': 'application/json' } }
-        )
-        .then(response => response.json())
-        .then(data => setRealEstateObjects(data._embedded.realEstateObjects))
-        .catch(error => console.error('Error fetching data:', error))
-        .finally(() => setLoading(false));
+        if(userId !== null){
+            setLoading(true);
+            apiCall(
+                ENDPOINTS.REAL_ESTATE_API + "/landlord/" + userId,
+                { method: 'GET', headers: { 'Accept': 'application/json' } }
+            )
+            .then(response => response.json())
+            .then(data => setRealEstateObjects(data._embedded.realEstateObjects))
+            .catch(error => console.error('Error fetching data:', error))
+            .finally(() => setLoading(false));
+        }
     };
 
     useEffect(() => {
