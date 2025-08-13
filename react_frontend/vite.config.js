@@ -16,6 +16,10 @@ export default defineConfig({
     hmr: {
       host: 'localhost', // OR your host IP if needed (e.g. 192.168.x.x)
       port: 4173
+    },
+    watch: {
+      usePolling: true,
+      interval: 100
     }
   },
   plugins: [react(),
