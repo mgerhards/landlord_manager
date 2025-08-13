@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-// ...existing code...
 
 const OpenDetailsButton = ({ obj }) => {
   const navigate = useNavigate();

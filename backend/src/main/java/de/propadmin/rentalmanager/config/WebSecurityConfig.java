@@ -78,6 +78,7 @@ public class WebSecurityConfig {
             .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt
                     .decoder(jwtDecoder())
+                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
                     // Optional: Add custom JWT authentication converter if needed
                 )
             )

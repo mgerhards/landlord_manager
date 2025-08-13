@@ -90,9 +90,13 @@ const App = () => {
   };
 
   useEffect(() => {
-    const id = window.location.pathname.split('/').pop();
-    if (id && isTokenValid) {
-      loadRealEstateObject(id);
+    // Only extract ID from detail routes
+    const path = window.location.pathname;
+    const detailsMatch = path.match(/\/immobilien\/details\/(\d+)$/);
+    
+    if (detailsMatch && isTokenValid) {
+        const id = detailsMatch[1]; // Extract the numeric ID
+        loadRealEstateObject(id);
     }
   }, [isTokenValid, loadRealEstateObject]);
 
