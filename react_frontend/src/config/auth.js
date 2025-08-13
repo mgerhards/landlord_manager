@@ -36,6 +36,8 @@ export const createAuthHeaders = (additionalHeaders = {}) => {
     
     if (token) {
         headers['Authorization'] = `Bearer ${token}`;
+    }else{
+        console.log('No token found, proceeding without Authorization header');
     }
     
     return headers;
