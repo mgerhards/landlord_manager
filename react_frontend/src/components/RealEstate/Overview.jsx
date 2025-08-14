@@ -18,28 +18,20 @@ const RealEstateOverview = () => {
     const fetchRealEstateObjects = () => {
         if(userId !== null){
             setLoading(true);
+            console.log("Fetching real estate objects for user ID:", userId);
             apiCall(
                 ENDPOINTS.REAL_ESTATE_API + "/landlord/" + userId,
                 { method: 'GET', headers: { 'Accept': 'application/json' } }
             )
             .then(response => response.json())
-            .then(data => setRealEstateObjects(data._embedded.realEstateObjects))
+            .then(data => setRealEstateObjects(data))
             .catch(error => console.error('Error fetching data:', error))
             .finally(() => setLoading(false));
         }
-    };
+    }; 
 
-    useEffect(() => {
-        setLoading(true);
-
-        apiCall(
-            ENDPOINTS.REAL_ESTATE_API + "/landlord/" + userId,
-            { method: 'GET', headers: { 'Accept': 'application/json' } }
-        )
-        .then(response => response.json())
-        .then(data => setRealEstateObjects(data._embedded.realEstateObjects))
-        .catch(error => console.error('Error fetching data:', error))
-        .finally(() => setLoading(false));
+    useEffect(() => { 
+        fetchRealEstateObjects();
     }, [userId]);
 
     const handleEdit = (obj) => {
