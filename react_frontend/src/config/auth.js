@@ -49,14 +49,16 @@ export const createAuthHeaders = (additionalHeaders = {}) => {
 export const handleApiError = async (response, navigate = null) => {
     if (response.status === 401) {
         // Token is invalid or expired
-        removeToken();
-        if (navigate) {
-            navigate('/login');
-        } else {
-            // Reload the page to show login form
-            window.location.reload();
-        }
-        throw new Error('Authentication required. Please log in again.');
+        // removeToken();
+        // if (navigate) {
+        //     navigate('/login');
+        // } else {
+        //     // Reload the page to show login form
+        //     window.location.reload();
+        // }
+        // throw new Error('Authentication required. Please log in again.');
+        console.log('Unauthorized access - token may be invalid or expired');
+        
     }
     
     if (!response.ok) {
@@ -71,10 +73,16 @@ export const handleApiError = async (response, navigate = null) => {
  * Make an authenticated API call
  */
 export const apiCall = async (url, options = {}, navigate = null) => {
+    const authHeaders = createAuthHeaders();
+    
+    // Fix: order here is important to not lose the auth headers!
     const defaultOptions = {
-        headers: createAuthHeaders(options.headers),
         credentials: 'include',
-        ...options
+        ...options,  // Spread options first (method, body, etc.)
+        headers: {
+            ...authHeaders,      // Base headers with Authorization
+            ...options.headers   
+        }
     };
     
     try {
