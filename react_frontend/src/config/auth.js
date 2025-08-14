@@ -49,13 +49,13 @@ export const createAuthHeaders = (additionalHeaders = {}) => {
 export const handleApiError = async (response, navigate = null) => {
     if (response.status === 401) {
         // Token is invalid or expired
-        // removeToken();
-        // if (navigate) {
-        //     navigate('/login');
-        // } else {
-        //     // Reload the page to show login form
-        //     window.location.reload();
-        // }
+        removeToken();
+        if (navigate) {
+            navigate('/login');
+        } else {
+            // Reload the page to show login form
+            window.location.reload();
+        }
         // throw new Error('Authentication required. Please log in again.');
         console.log('Unauthorized access - token may be invalid or expired');
         
