@@ -72,5 +72,5 @@ public class RealEstateObject {
     private LocalDate lastRenovationDate;
     private LocalDate nextInspectionDue;
 
-    // Getters and Setters
+    // Lombok generates getter and setter methods
 }
