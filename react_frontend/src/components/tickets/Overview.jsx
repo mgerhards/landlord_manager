@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ENDPOINTS } from '../../config/api';
+import { apiCall } from '../../config/auth';
 
 const TicketsOverview = () => {
     const navigate = useNavigate();
@@ -9,12 +10,11 @@ const TicketsOverview = () => {
     useEffect(() => {
         const fetchTickets = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(ENDPOINTS.TICKETS, {
+                const response = await apiCall(ENDPOINTS.TICKETS, {
+                    method: 'GET',
                     credentials: 'include',
                     headers: {
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Accept': 'application/json',                    
                     }
                 });
                 
