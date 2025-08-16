@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 const RealEstateDetails = () => {
   const location = useLocation();
-  const { realEstateObject } = location.state || {};
+  const { realEstateObject, contractObject } = location.state || {};
 
   if (!realEstateObject) {
     return <div>Loading...</div>;
@@ -13,7 +13,8 @@ const RealEstateDetails = () => {
   return (
     <div className='container-fluid'>
       <div className='row'>
-        <div className='col-12'>
+        {/* Real Estate Details Card */}
+        <div className='col-md-6 mb-3'>
           <div className="card">
             <div className="card-header">
               <h3 className="card-title mb-0">
@@ -29,8 +30,12 @@ const RealEstateDetails = () => {
               )}
 
               <div className="table-responsive">
-                <table className="table table-striped table-hover mb-0">
+                <table className="table table-striped table-hover mb-0" style={{ fontSize: '0.85rem' }}>
                   <tbody>
+                    {/* General Information */}
+                    <tr className="table-secondary">
+                      <td colSpan="2"><strong>General Information</strong></td>
+                    </tr>
                     <tr>
                       <td><strong>Address</strong></td>
                       <td>{realEstateObject.address}</td>
@@ -55,6 +60,11 @@ const RealEstateDetails = () => {
                       <td><strong>Floor</strong></td>
                       <td>{realEstateObject.floor}</td>
                     </tr>
+
+                    {/* Features */}
+                    <tr className="table-secondary">
+                      <td colSpan="2"><strong>Features</strong></td>
+                    </tr>
                     <tr>
                       <td><strong>Has Elevator</strong></td>
                       <td>
@@ -62,14 +72,6 @@ const RealEstateDetails = () => {
                           {realEstateObject.hasElevator ? 'Yes' : 'No'}
                         </span>
                       </td>
-                    </tr>
-                    <tr>
-                      <td><strong>Monthly Maintenance Costs</strong></td>
-                      <td>€{realEstateObject.monthlyMaintenanceCosts}</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Property Tax</strong></td>
-                      <td>€{realEstateObject.propertyTax}</td>
                     </tr>
                     <tr>
                       <td><strong>Heating Type</strong></td>
@@ -119,6 +121,24 @@ const RealEstateDetails = () => {
                         </span>
                       </td>
                     </tr>
+
+                    {/* Financial */}
+                    <tr className="table-secondary">
+                      <td colSpan="2"><strong>Financial</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Monthly Maintenance Costs</strong></td>
+                      <td>€{realEstateObject.monthlyMaintenanceCosts}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Property Tax</strong></td>
+                      <td>€{realEstateObject.propertyTax}</td>
+                    </tr>
+
+                    {/* Dates */}
+                    <tr className="table-secondary">
+                      <td colSpan="2"><strong>Dates</strong></td>
+                    </tr>
                     <tr>
                       <td><strong>Last Renovation Date</strong></td>
                       <td>{realEstateObject.lastRenovationDate}</td>
@@ -127,13 +147,77 @@ const RealEstateDetails = () => {
                       <td><strong>Next Inspection Due</strong></td>
                       <td>{realEstateObject.nextInspectionDue}</td>
                     </tr>
+
+                    {/* Location */}
+                    <tr className="table-secondary">
+                      <td colSpan="2"><strong>Location</strong></td>
+                    </tr>
                     <tr>
-                      <td><strong>Location</strong></td>
+                      <td><strong>Coordinates</strong></td>
                       <td>{realEstateObject.latitude}, {realEstateObject.longitude}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Contract Data Card */}
+        <div className='col-md-6 mb-3'>
+          <div className="card">
+            <div className="card-header">
+              <h3 className="card-title mb-0">
+                <i className="fas fa-file-contract me-2"></i>
+                Contract Data
+              </h3>
+            </div>
+            <div className="card-body">
+              {contractObject ? (
+                <div className="table-responsive">
+                  <table className="table table-striped table-hover mb-0" style={{ fontSize: '0.85rem' }}>
+                    <tbody>
+                      <tr className="table-secondary">
+                        <td colSpan="2"><strong>Contract Information</strong></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Contract Number</strong></td>
+                        <td>{contractObject.contractNumber}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Tenant Name</strong></td>
+                        <td>{contractObject.tenantName}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Start Date</strong></td>
+                        <td>{contractObject.startDate}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>End Date</strong></td>
+                        <td>{contractObject.endDate}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Monthly Rent</strong></td>
+                        <td>€{contractObject.monthlyRent}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Deposit</strong></td>
+                        <td>€{contractObject.deposit}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Status</strong></td>
+                        <td>
+                          <span className={`badge ${contractObject.isActive ? 'bg-success' : 'bg-secondary'}`}>
+                            {contractObject.isActive ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="text-muted">No contract data available.</div>
+              )}
             </div>
           </div>
         </div>
@@ -143,7 +227,8 @@ const RealEstateDetails = () => {
 };
 
 RealEstateDetails.propTypes = {
-  realEstateObject: PropTypes.object
+  realEstateObject: PropTypes.object,
+  contractObject: PropTypes.object
 };
 
 export default RealEstateDetails;
