@@ -1,6 +1,7 @@
 package de.propadmin.rentalmanager.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.propadmin.rentalmanager.models.Ticket;
 import de.propadmin.rentalmanager.models.TicketComment;
+import de.propadmin.rentalmanager.service.TicketAuthorizationService;
 import de.propadmin.rentalmanager.service.TicketService;
 
 @RestController
@@ -24,6 +26,23 @@ public class TicketController {
 
     @Autowired
     private TicketService ticketService;
+    
+    @Autowired
+    private TicketAuthorizationService ticketAuthorizationService;
+
+    @GetMapping("/{ticketId}")
+    public ResponseEntity<Ticket> getTicket(@PathVariable Long ticketId) {
+        try {
+            Optional<Ticket> ticketOpt = ticketAuthorizationService.getAuthorizedTicket(ticketId);
+            if (ticketOpt.isPresent()) {
+                return ResponseEntity.ok(ticketOpt.get());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @PostMapping
     public ResponseEntity<Ticket> openTicket(@RequestBody Ticket ticket, 
@@ -115,6 +134,10 @@ public class TicketController {
     @GetMapping("/{ticketId}/comments")
     public ResponseEntity<List<TicketComment>> getTicketComments(@PathVariable Long ticketId) {
         try {
+            // Also check authorization for viewing comments
+            if (!ticketAuthorizationService.canViewTicket(ticketId)) {
+                return ResponseEntity.notFound().build();
+            }
             List<TicketComment> comments = ticketService.getTicketComments(ticketId);
             return ResponseEntity.ok(comments);
         } catch (Exception e) {
