@@ -4,13 +4,14 @@ import { useLocation } from 'react-router-dom';
 
 const RealEstateDetails = () => {
   const location = useLocation();
-  const { realEstateObject, contracts } = location.state || {};
+  const { realEstateObject} = location.state || {};
 
   if (!realEstateObject) {
     return <div>Loading...</div>;
   }
 
   // Separate active and inactive contracts
+  const contracts = realEstateObject.contracts || [];
   const activeContracts = contracts?.filter(contract => contract.isActive) || [];
   const inactiveContracts = contracts?.filter(contract => !contract.isActive) || [];
 
