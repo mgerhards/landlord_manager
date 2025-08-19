@@ -224,7 +224,7 @@ public class DataInitializer implements CommandLineRunner {
         contract2.setEndDate(null);
         contract2.setMonthlyRent(BigDecimal.valueOf(1200));
         contract2.setLandlord(landlord1);
-        contract2.setTenants(Arrays.asList(tenant1));
+        contract2.setTenants(Arrays.asList(tenant2));
         contract2.setAsset(realEstateObject1);
         contractService.createContract(contract2);
 
