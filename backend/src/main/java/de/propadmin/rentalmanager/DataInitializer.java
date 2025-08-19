@@ -182,6 +182,32 @@ public class DataInitializer implements CommandLineRunner {
         tenant1.setMoveInDate(LocalDate.of(2023, 1, 1));
         tenantService.createTenant(tenant1);
 
+        Tenant tenant2 = new Tenant();
+        // Create and set UserAccount for tenant2
+        UserAccount tenant2Account = new UserAccount();
+        tenant2Account.setEmail("michael.brown@example.com");
+        tenant2Account.setPassword(passwordEncoder.encode("password"));
+        tenant2Account = userRepository.save(tenant2Account);
+
+        tenant2.setUserAccount(tenant2Account);
+        tenant2.setName("Michael Brown");
+        tenant2.setPhoneNumber("555-2468");
+        tenant2.setDateOfBirth(LocalDate.of(1990, 3, 22));
+        tenant2.setIdNumber("ID987654321");
+        tenant2.setOccupation("Architect");
+        tenant2.setEmployerName("Design Studio");
+        tenant2.setEmployerContact("contact@designstudio.com");
+        tenant2.setAlternativePhoneNumber("555-1357");
+        tenant2.setWorkPhoneNumber("555-8642");
+        tenant2.setEmergencyContactName("Sarah Brown");
+        tenant2.setEmergencyContactPhone("555-2468");
+        tenant2.setBankAccountHolder("Michael Brown");
+        tenant2.setIban("DE12 3456 7890 1234 5678 90");
+        tenant2.setBic("DEUTDEFFXXX");
+        tenant2.setNumberOfOccupants(1);
+        tenant2.setMoveInDate(LocalDate.of(2024, 4, 1));
+        tenantService.createTenant(tenant2);
+
         // Create a contract
         Contract contract1 = new Contract();
         contract1.setStartDate(LocalDate.of(2023, 1, 1));
@@ -191,6 +217,16 @@ public class DataInitializer implements CommandLineRunner {
         contract1.setTenants(Arrays.asList(tenant1));
         contract1.setAsset(realEstateObject1);
         contractService.createContract(contract1);
+        
+        // Create another contract
+        Contract contract2 = new Contract();
+        contract2.setStartDate(LocalDate.of(2024, 3, 1));
+        contract2.setEndDate(null);
+        contract2.setMonthlyRent(BigDecimal.valueOf(1200));
+        contract2.setLandlord(landlord1);
+        contract2.setTenants(Arrays.asList(tenant1));
+        contract2.setAsset(realEstateObject1);
+        contractService.createContract(contract2);
 
        // Create craftsman firm
         CraftsmanFirm craftsmanFirm1 = new CraftsmanFirm();
