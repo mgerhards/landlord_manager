@@ -26,6 +26,10 @@ public class ContractService {
         return contractRepository.findByTenantId(tenantId);
     }
 
+    public List<Contract> findByRealEstateObjectId(Long realEstateObjectId) {
+        return contractRepository.findByAssetId(realEstateObjectId);
+    }
+
     public void deleteContract(Long id) {
         contractRepository.deleteById(id);
     }

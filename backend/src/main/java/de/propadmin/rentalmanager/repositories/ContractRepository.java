@@ -15,4 +15,6 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     @Query("SELECT c FROM Contract c JOIN c.tenants t WHERE t.id = :tenantId")
     List<Contract> findByTenantId(@Param("tenantId") Long tenantId);
+
+    List<Contract> findByAssetId(Long realEstateObjectId);
 }

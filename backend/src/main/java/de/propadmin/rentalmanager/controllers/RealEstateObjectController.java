@@ -1,6 +1,7 @@
 package de.propadmin.rentalmanager.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.propadmin.rentalmanager.dto.RealEstateDetailsDTO;
+import de.propadmin.rentalmanager.models.Contract;
 import de.propadmin.rentalmanager.models.RealEstateObject;
+import de.propadmin.rentalmanager.service.ContractService;
 import de.propadmin.rentalmanager.service.RealEstateObjectService;
 
 @RestController
@@ -24,6 +28,9 @@ public class RealEstateObjectController {
 
     @Autowired
     private RealEstateObjectService realEstateObjectService;
+
+    @Autowired
+    private ContractService contractService;
 
     @GetMapping
     public ResponseEntity<List<RealEstateObject>> getAllRealEstateObjects() {
@@ -91,7 +98,7 @@ public class RealEstateObjectController {
 
     @GetMapping("/{id}/details")
     public ResponseEntity<RealEstateDetailsDTO> getRealEstateDetails(@PathVariable Long id) {
-        RealEstateObject realEstate = realEstateObjectService.findById(id);
+        Optional<RealEstateObject> realEstate = realEstateObjectService.getRealEstateObjectById(id);
         List<Contract> contracts = contractService.findByRealEstateObjectId(id);
         
         RealEstateDetailsDTO dto = new RealEstateDetailsDTO();
