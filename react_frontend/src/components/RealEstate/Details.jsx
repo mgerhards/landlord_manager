@@ -342,7 +342,7 @@ const RealEstateDetails = () => {
                 <div className="accordion" id="inactiveContractsAccordion">
                   {inactiveContracts.map((contract, index) => (
                     <div key={`inactive-${contract.id || index}`} className="accordion-item">
-                      <h2 className="accordion-header" id={`heading-${index}`}>
+                      <h2 className="accordion-header" id={`heading-${index}`}>                       
                         <button
                           className="accordion-button collapsed"
                           type="button"
@@ -351,7 +351,8 @@ const RealEstateDetails = () => {
                           aria-expanded="false"
                           aria-controls={`collapse-${index}`}
                         >
-                          Contract #{contract.contractNumber} - {contract.tenantName}
+                          Contract #{contract.contractNumber} - {contract.tenants.map(t => t.name).join(', ')}
+                          ({formatDate(contract.startDate)} - {formatDate(contract.endDate)})
                         </button>
                       </h2>
                       <div
