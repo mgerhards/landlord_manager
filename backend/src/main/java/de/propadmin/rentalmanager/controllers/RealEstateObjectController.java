@@ -95,16 +95,4 @@ public class RealEstateObjectController {
             return ResponseEntity.badRequest().build();
         }
     }
-
-    @GetMapping("/{id}/details")
-    public ResponseEntity<RealEstateDetailsDTO> getRealEstateDetails(@PathVariable Long id) {
-        Optional<RealEstateObject> realEstate = realEstateObjectService.getRealEstateObjectById(id);
-        List<Contract> contracts = contractService.findByRealEstateObjectId(id);
-        
-        RealEstateDetailsDTO dto = new RealEstateDetailsDTO();
-        dto.setRealEstateObject(realEstate);
-        dto.setContracts(contracts);
-        
-        return ResponseEntity.ok(dto);
-    }
 }

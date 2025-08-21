@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import de.propadmin.rentalmanager.models.enums.ContractStatus;
 import jakarta.persistence.Entity;
@@ -35,7 +36,7 @@ public class Contract {
 
     @ManyToOne
     @JoinColumn(name = "landlord_id")
-    @JsonBackReference
+    @JsonIgnoreProperties({"contracts", "realEstateObjects"}) // Ignore fields that could cause loops
     private Landlord landlord;
 
     @ManyToMany
@@ -44,12 +45,12 @@ public class Contract {
         joinColumns = @JoinColumn(name = "contract_id"),
         inverseJoinColumns = @JoinColumn(name = "tenant_id")
     )
-    @JsonBackReference
+    @JsonIgnoreProperties({"contracts"}) // Ignore contracts in tenants to prevent loops
     private List<Tenant> tenants;
 
     @ManyToOne
     @JoinColumn(name = "asset_id")
-    @JsonBackReference
+    @JsonIgnoreProperties({"contracts"}) // Ignore contracts in tenant
     private RealEstateObject asset;
 
     @Enumerated(EnumType.STRING)
