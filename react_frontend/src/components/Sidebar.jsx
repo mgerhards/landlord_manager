@@ -24,7 +24,7 @@ const Sidebar = () => {
                           </Link>
                         </li>
                         <li className="nav-item">
-                        <Link to="/tennants" className="nav-link">
+                        <Link to="/tenants" className="nav-link">
                             <i className="nav-icon bi bi-people-fill"></i>
                             <p>
                               Mieter

@@ -6,7 +6,7 @@ import "./App.css"
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import RealEstateOverview from './components/RealEstate/Overview.jsx';
 import RealEstateForm from './components/RealEstate/Form.jsx';
-import TennantsOverview from './components/tennants/Overview.jsx';
+import TennantsOverview from './components/tenants/Overview.jsx';
 import CompaniesOverview from './components/companies/Overview.jsx';
 import TicketsOverview from './components/tickets/Overview.jsx';
 import TicketCreate from './components/tickets/TicketCreate.jsx';
@@ -148,7 +148,7 @@ const App = () => {
             <Route path="/real-estate" element={<RealEstateOverview />} />
             <Route path="/real-estate/form" element={<RealEstateForm />} />
             <Route path="/immobilien/details/:id" element={<RealEstateDetails realEstateObject={realEstateObject} />} />
-            <Route path="/tennants" element={<TennantsOverview />} />
+            <Route path="/tenants" element={<TennantsOverview />} />
             <Route path="/companies" element={<CompaniesOverview />} />
             <Route path="/tickets" element={<TicketsOverview />} />
             <Route path="/tickets/create" element={<TicketCreate />} />
