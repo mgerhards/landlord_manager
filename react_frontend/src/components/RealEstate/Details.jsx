@@ -94,11 +94,42 @@ const RealEstateDetails = () => {
             )}
 
             {/* Tickets Section */}
-            <div className='col-md-6 mb-3'>
+            <div className='col-md-12 mb-12'>
               <h4 className="mb-3">
                 <i className="fas fa-ticket-alt me-2 text-primary"></i>
                 Tickets
               </h4>
+              {realEstateObject.tickets && realEstateObject.tickets.length > 0 ? (
+                <div className="card">
+                  <div className="card-body">
+                    {realEstateObject.tickets.map((ticket, index) => (
+                      <div key={ticket.id || index} className={`border rounded p-3 ${index < realEstateObject.tickets.length - 1 ? 'mb-3' : ''}`}>
+                        <div className="d-flex justify-content-between align-items-start mb-2">
+                          <h6 className="mb-1">{ticket.title}</h6>
+                          <span className={`badge ${ticket.status === 'open' ? 'bg-danger' : ticket.status === 'in-progress' ? 'bg-warning' : 'bg-success'}`}>
+                            {ticket.status}
+                          </span>
+                        </div>
+                        <p className="text-muted small mb-2">{ticket.description}</p>
+                        <div className="d-flex justify-content-between small text-muted">
+                          <span>Created: {formatDate(ticket.createdDate)}</span>
+                          {ticket.priority && <span className={`badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-secondary'}`}>
+                            {ticket.priority}
+                          </span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="card">
+                  <div className="card-body text-center text-muted py-4">
+                    <i className="fas fa-ticket-alt fa-2x mb-3"></i>
+                    <h6>No Tickets</h6>
+                    <p className="small">No tickets have been created for this property.</p>
+                  </div>
+                </div>
+              )}
               {/* Render tickets related to the real estate object */}
             </div>
           </div>
