@@ -228,6 +228,7 @@ public class DataInitializer implements CommandLineRunner {
         contract2.setTenants(Arrays.asList(tenant2));
         contract2.setAsset(realEstateObject1);
         contract2.setContractNumber("C-2024-002");
+       
         contractService.createContract(contract2);
 
        // Create craftsman firm
