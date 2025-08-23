@@ -22,6 +22,10 @@ public class TenantService {
         return tenantRepository.findAll();
     }
 
+    public List<Tenant> getTenantsByLandlordId(Long landlordId) {
+        return tenantRepository.findByContractsLandlordId(landlordId);
+    }
+
     public void deleteTenant(Long id) {
         tenantRepository.deleteById(id);
     }
