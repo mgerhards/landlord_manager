@@ -7,6 +7,7 @@ export const ENDPOINTS = {
     REAL_ESTATE_API: `${API_BASE_URL}/api/real-estate`,
     TICKETS: `${API_BASE_URL}/api/tickets`,
     TENANTS: `${API_BASE_URL}/api/tenants`,
+    TENANTS_BY_LANDLORD: `${API_BASE_URL}/api/tenants/by-landlord`,
     LANDLORDS: `${API_BASE_URL}/api/landlords`,
     CRAFTSMAN_FIRMS: `${API_BASE_URL}/api/craftsman-firms`,
     CONTRACTS: `${API_BASE_URL}/api/contracts`,
