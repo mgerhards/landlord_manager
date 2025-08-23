@@ -10,6 +10,7 @@ export const ENDPOINTS = {
     TENANTS_BY_LANDLORD: `${API_BASE_URL}/api/tenants/by-landlord`,
     LANDLORDS: `${API_BASE_URL}/api/landlords`,
     CRAFTSMAN_FIRMS: `${API_BASE_URL}/api/craftsman-firms`,
+    COMPANIES: `${API_BASE_URL}/api/companies`,
     CONTRACTS: `${API_BASE_URL}/api/contracts`,
     PROPERTY_TYPES: `${API_BASE_URL}/api/property-types`,
     CONTRACT_STATUSES: `${API_BASE_URL}/api/contract-statuses`,
