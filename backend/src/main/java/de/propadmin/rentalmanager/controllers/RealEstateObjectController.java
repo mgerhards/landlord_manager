@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.propadmin.rentalmanager.dto.RealEstateDetailsDTO;
 import de.propadmin.rentalmanager.models.Contract;
 import de.propadmin.rentalmanager.models.RealEstateObject;
 import de.propadmin.rentalmanager.service.ContractService;
