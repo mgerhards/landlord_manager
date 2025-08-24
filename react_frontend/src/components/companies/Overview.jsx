@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ENDPOINTS } from '../../config/api';
 import { apiCall } from '../../config/auth';
 
 const CompaniesOverview = () => {
+    const navigate = useNavigate();
     const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -31,7 +33,11 @@ const CompaniesOverview = () => {
         };
 
         fetchCompanies();
-    }, []);
+    }, [navigate]);
+
+    const handleCreateCompany = () => {
+        navigate('/companies/create');
+    };
 
     if (loading) {
         return (
@@ -59,7 +65,15 @@ const CompaniesOverview = () => {
 
     return (
         <div className="container">
-            <h2>Firmen</h2>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <h2>Firmen</h2>
+                <button 
+                    className="btn btn-primary"
+                    onClick={handleCreateCompany}
+                >
+                    <i className="bi bi-plus"></i> Firma erstellen
+                </button>
+            </div>
             {companies.length === 0 ? (
                 <div className="alert alert-info" role="alert">
                     Keine Firmen gefunden.
