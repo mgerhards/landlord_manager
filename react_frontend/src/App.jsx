@@ -13,11 +13,10 @@ import TicketsOverview from './components/tickets/Overview.jsx';
 import TicketCreate from './components/tickets/TicketCreate.jsx';
 import RealEstateDetails from './components/RealEstate/Details.jsx';
 import CompaniesDetails from './components/companies/Details.jsx';
+import Home from './components/Home.jsx';
 import Login from './Login.jsx';
 import { isAuthenticated, verifyToken, logout, apiCall } from './config/auth.js';
 import { ENDPOINTS } from './config/api.js';
-
-const Home = () => <h3>Home</h3>;
 
 const App = () => {
   const navigate = useNavigate();
