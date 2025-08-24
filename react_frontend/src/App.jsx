@@ -12,6 +12,7 @@ import CompanyForm from './components/companies/CompanyForm.jsx';
 import TicketsOverview from './components/tickets/Overview.jsx';
 import TicketCreate from './components/tickets/TicketCreate.jsx';
 import RealEstateDetails from './components/RealEstate/Details.jsx';
+import CompaniesDetails from './components/companies/Details.jsx';
 import Login from './Login.jsx';
 import { isAuthenticated, verifyToken, logout, apiCall } from './config/auth.js';
 import { ENDPOINTS } from './config/api.js';
@@ -151,7 +152,6 @@ const App = () => {
             <Route path="/immobilien/details/:id" element={<RealEstateDetails realEstateObject={realEstateObject} />} />
             <Route path="/tenants" element={<TennantsOverview />} />
             <Route path="/companies" element={<CompaniesOverview />} />
-            <Route path="/companies/create" element={<CompanyForm />} />
             <Route path="/tickets" element={<TicketsOverview />} />
             <Route path="/tickets/create" element={<TicketCreate />} />
           </Routes>
