@@ -2,6 +2,9 @@ package de.propadmin.rentalmanager.models;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
@@ -22,7 +25,7 @@ public class TicketComment {
     private Long id;
 
     private String comment;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt; // Keep existing field for backward compatibility
     private String createdBy; // Could be tenant, landlord, or craftsman contact
 
     @ManyToOne
@@ -30,8 +33,17 @@ public class TicketComment {
     @JsonBackReference
     private Ticket ticket;
 
+    // Additional audit fields
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+    
+    private LocalDateTime deletedAt;
+    private String lastModifiedBy;
+
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 }

@@ -19,6 +19,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -81,9 +84,14 @@ public class FrameworkContract {
     private String insuranceDocumentPath;
     private String termsAndConditionsPath;
 
-    // Audit
+    // Audit fields
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
+    
+    private LocalDateTime deletedAt;
     private String createdBy;
     private String lastModifiedBy;
 } 

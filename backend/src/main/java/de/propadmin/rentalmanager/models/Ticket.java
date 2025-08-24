@@ -3,6 +3,9 @@ package de.propadmin.rentalmanager.models;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -32,6 +35,7 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
     
+    // Keep backward compatibility - this field is used by existing code
     private LocalDateTime creationDate;
 
     @ManyToOne
@@ -57,6 +61,17 @@ public class Ticket {
     @OneToMany(mappedBy = "ticket")
     @JsonManagedReference
     private List<TicketComment> comments;
+
+    // Audit fields (in addition to existing creationDate)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+    
+    private LocalDateTime deletedAt;
+    private String createdBy;
+    private String lastModifiedBy;
 
     @PrePersist
     protected void onCreate() {

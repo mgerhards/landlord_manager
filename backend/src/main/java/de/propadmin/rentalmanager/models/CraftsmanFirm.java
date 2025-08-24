@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import de.propadmin.rentalmanager.models.enums.TradeType;
@@ -70,9 +73,14 @@ public class CraftsmanFirm {
     private Integer cancelledJobsCount;
     private Integer emergencyResponseTimeMinutes;
 
-    // Audit
+    // Audit fields
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
+    
+    private LocalDateTime deletedAt;
     private String createdBy;
     private String lastModifiedBy;
 
