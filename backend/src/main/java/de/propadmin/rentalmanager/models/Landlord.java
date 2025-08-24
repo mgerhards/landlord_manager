@@ -1,8 +1,11 @@
 package de.propadmin.rentalmanager.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -46,6 +49,17 @@ public class Landlord {
     @OneToMany(mappedBy = "landlord")
     @JsonManagedReference
     private List<FrameworkContract> frameworkContracts;
+
+    // Audit fields
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+    
+    private LocalDateTime deletedAt;
+    private String createdBy;
+    private String lastModifiedBy;
 
     public boolean isLicenseValid() {
         return licenseExpirationDate != null && LocalDate.now().isBefore(licenseExpirationDate);
