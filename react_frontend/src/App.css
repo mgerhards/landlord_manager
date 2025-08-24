@@ -4,3 +4,7 @@
 .btn:hover {
   cursor: pointer;
 }
+
+.sidebar-overlay{
+  position: fixed
+}
