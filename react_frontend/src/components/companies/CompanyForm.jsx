@@ -77,7 +77,7 @@ const CompanyForm = () => {
                 [name]: checked
             }));
         } else if (name === 'trades') {
-            const currentTrades = formData.trades || [];
+            const currentTrades = Array.isArray(formData.trades) ? formData.trades : [];
             if (checked) {
                 setFormData(prev => ({
                     ...prev,
@@ -388,7 +388,7 @@ const CompanyForm = () => {
                                                             id={`trade-${trade.value}`}
                                                             name="trades"
                                                             value={trade.value}
-                                                            checked={formData.trades.includes(trade.value)}
+                                                            checked={Array.isArray(formData.trades) ? formData.trades.includes(trade.value) : false}
                                                             onChange={handleInputChange}
                                                         />
                                                         <label className="form-check-label" htmlFor={`trade-${trade.value}`}>
