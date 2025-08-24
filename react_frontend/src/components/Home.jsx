@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { apiCall } from '../config/auth';
-import { ENDPOINTS } from '../config/api';
+// import { apiCall } from '../config/auth';
+// import { ENDPOINTS } from '../config/api';
 
 const Home = () => {
   const [dashboardData, setDashboardData] = useState({
