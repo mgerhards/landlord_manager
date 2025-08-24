@@ -8,6 +8,7 @@ import RealEstateOverview from './components/RealEstate/Overview.jsx';
 import RealEstateForm from './components/RealEstate/Form.jsx';
 import TennantsOverview from './components/tenants/Overview.jsx';
 import CompaniesOverview from './components/companies/Overview.jsx';
+import CompanyForm from './components/companies/CompanyForm.jsx';
 import TicketsOverview from './components/tickets/Overview.jsx';
 import TicketCreate from './components/tickets/TicketCreate.jsx';
 import RealEstateDetails from './components/RealEstate/Details.jsx';
@@ -151,7 +152,6 @@ const App = () => {
             <Route path="/immobilien/details/:id" element={<RealEstateDetails realEstateObject={realEstateObject} />} />
             <Route path="/tenants" element={<TennantsOverview />} />
             <Route path="/companies" element={<CompaniesOverview />} />
-            <Route path="/companies/details/:id" element={<CompaniesDetails />} />
             <Route path="/tickets" element={<TicketsOverview />} />
             <Route path="/tickets/create" element={<TicketCreate />} />
           </Routes>
