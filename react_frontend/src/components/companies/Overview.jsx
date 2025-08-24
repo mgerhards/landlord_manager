@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ENDPOINTS } from '../../config/api';
 import { apiCall } from '../../config/auth';
+import OpenDetailsButton from './OpenDetailsButton';
 
 const CompaniesOverview = () => {
     const [companies, setCompanies] = useState([]);
@@ -75,6 +76,7 @@ const CompaniesOverview = () => {
                                 <th>Adresse</th>
                                 <th>Gewerke</th>
                                 <th>Notdienst</th>
+                                <th>Aktionen</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,6 +102,9 @@ const CompaniesOverview = () => {
                                             <span className="badge bg-success">Ja</span> : 
                                             <span className="badge bg-secondary">Nein</span>
                                         }
+                                    </td>
+                                    <td>
+                                        <OpenDetailsButton company={company} />
                                     </td>
                                 </tr>
                             ))}
