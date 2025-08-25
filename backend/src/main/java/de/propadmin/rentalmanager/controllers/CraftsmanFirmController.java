@@ -54,6 +54,30 @@ public class CraftsmanFirmController {
         }
     }
     
+    @GetMapping("/cheapest-emergency")
+    public ResponseEntity<CraftsmanFirm> getCheapestEmergencyCompany() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userEmail = authentication.getName();
+            
+            // Get landlord by user account email
+            Landlord landlord = landlordRepository.findByUserAccountEmail(userEmail);
+            if (landlord == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            
+            // Get cheapest emergency company for this landlord
+            CraftsmanFirm cheapestCompany = craftsmanFirmService.getCheapestEmergencyCompanyByLandlord(landlord.getId());
+            if (cheapestCompany == null) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            return ResponseEntity.ok(cheapestCompany);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
     @PostMapping
     public ResponseEntity<CraftsmanFirm> createCompany(@RequestBody CraftsmanFirm craftsmanFirm) {
         try {

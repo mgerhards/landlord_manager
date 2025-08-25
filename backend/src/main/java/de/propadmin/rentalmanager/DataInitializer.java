@@ -315,6 +315,173 @@ public class DataInitializer implements CommandLineRunner {
         fcontract1.setInsurancePolicyNumber("POL-123456");
         frameworkContractRepository.save(fcontract1);
 
+        // Create additional craftsman firms with different emergency rates for testing
+        
+        // Company 2 - More expensive emergency rate
+        CraftsmanFirm craftsmanFirm2 = new CraftsmanFirm();
+        craftsmanFirm2.setCompanyName("Schnell-Service Weber AG");
+        craftsmanFirm2.setVatNumber("DE987654321");
+        craftsmanFirm2.setRegistrationNumber("HRB 98765");
+        craftsmanFirm2.setPrimaryContactName("Klaus Weber");
+        craftsmanFirm2.setPhone("+49 30 98765432");
+        craftsmanFirm2.setEmergencyPhone("+49 176 98765432");
+        craftsmanFirm2.setEmail("info@weber-service.de");
+        craftsmanFirm2.setWebsite("www.weber-service.de");
+        craftsmanFirm2.setStreet("Hauptstraße");
+        craftsmanFirm2.setHouseNumber("123");
+        craftsmanFirm2.setPostalCode("12349");
+        craftsmanFirm2.setCity("Berlin");
+        craftsmanFirm2.setCountry("Deutschland");
+        craftsmanFirm2.setTrades(Set.of(TradeType.ELECTRICAL, TradeType.CLEANING));
+        craftsmanFirm2.setIsEmergencyServiceProvider(true);
+        craftsmanFirm2.setAvailabilityHours("24/7");
+        craftsmanFirm2.setServicePostalCodes(Set.of("12349", "12350", "12351"));
+        craftsmanFirm2.setMaxTravelRadiusKm(30);
+        craftsmanFirm2.setStandardHourlyRate(new BigDecimal("95.00"));
+        craftsmanFirm2.setEmergencyHourlyRate(new BigDecimal("180.00")); // Most expensive
+        craftsmanFirm2.setTravelCostPerKm(new BigDecimal("0.60"));
+        craftsmanFirm2.setStandardWarrantyMonths(12);
+        craftsmanFirm2 = craftsmanFirmRepository.save(craftsmanFirm2);
+
+        // Framework contract for Company 2
+        FrameworkContract fcontract2 = new FrameworkContract();
+        fcontract2.setCraftsmanFirm(craftsmanFirm2);
+        fcontract2.setLandlord(landlord1);
+        fcontract2.setContractNumber("FC-2024-002");
+        fcontract2.setStartDate(LocalDate.now());
+        fcontract2.setEndDate(LocalDate.now().plusYears(1));
+        fcontract2.setIsActive(true);
+        fcontract2.setNegotiatedHourlyRate(new BigDecimal("90.00"));
+        fcontract2.setNegotiatedEmergencyRate(new BigDecimal("170.00"));
+        fcontract2.setNegotiatedTravelCost(new BigDecimal("0.55"));
+        fcontract2.setDiscountPercentage(new BigDecimal("3.00"));
+        fcontract2.setWarrantyMonths(12);
+        fcontract2.setIban("DE89370400440532013001");
+        fcontract2.setBic("DEUTDEBBXXX");
+        fcontract2.setBankName("Deutsche Bank");
+        fcontract2.setAccountHolder("Schnell-Service Weber AG");
+        fcontract2.setPaymentTermDays(14);
+        fcontract2.setAcceptedPaymentMethods(Set.of(PaymentMethod.BANK_TRANSFER));
+        fcontract2.setMaxResponseTimeHours(12);
+        fcontract2.setEmergencyResponseTimeMinutes(60);
+        fcontract2.setIncludesWeekendService(true);
+        fcontract2.setServiceHours("24/7");
+        fcontract2.setCoveredTrades(Set.of(TradeType.ELECTRICAL, TradeType.CLEANING));
+        fcontract2.setRequiredInsuranceAmount(new BigDecimal("2000000.00"));
+        fcontract2.setInsuranceExpiryDate(LocalDate.now().plusYears(1));
+        fcontract2.setInsurancePolicyNumber("POL-789012");
+        frameworkContractRepository.save(fcontract2);
+
+        // Company 3 - Cheapest emergency rate
+        CraftsmanFirm craftsmanFirm3 = new CraftsmanFirm();
+        craftsmanFirm3.setCompanyName("Budget Handwerk GmbH");
+        craftsmanFirm3.setVatNumber("DE456789012");
+        craftsmanFirm3.setRegistrationNumber("HRB 45678");
+        craftsmanFirm3.setPrimaryContactName("Maria Schmidt");
+        craftsmanFirm3.setPhone("+49 30 45678901");
+        craftsmanFirm3.setEmergencyPhone("+49 176 45678901");
+        craftsmanFirm3.setEmail("info@budget-handwerk.de");
+        craftsmanFirm3.setWebsite("www.budget-handwerk.de");
+        craftsmanFirm3.setStreet("Werkstraße");
+        craftsmanFirm3.setHouseNumber("7");
+        craftsmanFirm3.setPostalCode("12353");
+        craftsmanFirm3.setCity("Berlin");
+        craftsmanFirm3.setCountry("Deutschland");
+        craftsmanFirm3.setTrades(Set.of(TradeType.PLUMBING, TradeType.PAINTING));
+        craftsmanFirm3.setIsEmergencyServiceProvider(true);
+        craftsmanFirm3.setAvailabilityHours("Mo-So 7:00-22:00");
+        craftsmanFirm3.setServicePostalCodes(Set.of("12353", "12354", "12355"));
+        craftsmanFirm3.setMaxTravelRadiusKm(40);
+        craftsmanFirm3.setStandardHourlyRate(new BigDecimal("75.00"));
+        craftsmanFirm3.setEmergencyHourlyRate(new BigDecimal("120.00")); // Cheapest
+        craftsmanFirm3.setTravelCostPerKm(new BigDecimal("0.40"));
+        craftsmanFirm3.setStandardWarrantyMonths(18);
+        craftsmanFirm3 = craftsmanFirmRepository.save(craftsmanFirm3);
+
+        // Framework contract for Company 3
+        FrameworkContract fcontract3 = new FrameworkContract();
+        fcontract3.setCraftsmanFirm(craftsmanFirm3);
+        fcontract3.setLandlord(landlord1);
+        fcontract3.setContractNumber("FC-2024-003");
+        fcontract3.setStartDate(LocalDate.now());
+        fcontract3.setEndDate(LocalDate.now().plusYears(3));
+        fcontract3.setIsActive(true);
+        fcontract3.setNegotiatedHourlyRate(new BigDecimal("70.00"));
+        fcontract3.setNegotiatedEmergencyRate(new BigDecimal("110.00"));
+        fcontract3.setNegotiatedTravelCost(new BigDecimal("0.35"));
+        fcontract3.setDiscountPercentage(new BigDecimal("7.00"));
+        fcontract3.setWarrantyMonths(18);
+        fcontract3.setIban("DE89370400440532013002");
+        fcontract3.setBic("DEUTDEBBXXX");
+        fcontract3.setBankName("Deutsche Bank");
+        fcontract3.setAccountHolder("Budget Handwerk GmbH");
+        fcontract3.setPaymentTermDays(21);
+        fcontract3.setAcceptedPaymentMethods(Set.of(PaymentMethod.BANK_TRANSFER, PaymentMethod.INVOICE));
+        fcontract3.setMaxResponseTimeHours(18);
+        fcontract3.setEmergencyResponseTimeMinutes(90);
+        fcontract3.setIncludesWeekendService(false);
+        fcontract3.setServiceHours("Mo-So 7:00-22:00");
+        fcontract3.setCoveredTrades(Set.of(TradeType.PLUMBING, TradeType.PAINTING));
+        fcontract3.setRequiredInsuranceAmount(new BigDecimal("1500000.00"));
+        fcontract3.setInsuranceExpiryDate(LocalDate.now().plusYears(1));
+        fcontract3.setInsurancePolicyNumber("POL-345678");
+        frameworkContractRepository.save(fcontract3);
+
+        // Company 4 - Medium emergency rate
+        CraftsmanFirm craftsmanFirm4 = new CraftsmanFirm();
+        craftsmanFirm4.setCompanyName("Premium Service Müller OHG");
+        craftsmanFirm4.setVatNumber("DE123456780");
+        craftsmanFirm4.setRegistrationNumber("HRB 12350");
+        craftsmanFirm4.setPrimaryContactName("Thomas Müller");
+        craftsmanFirm4.setPhone("+49 30 11223344");
+        craftsmanFirm4.setEmergencyPhone("+49 176 11223344");
+        craftsmanFirm4.setEmail("info@premium-mueller.de");
+        craftsmanFirm4.setWebsite("www.premium-mueller.de");
+        craftsmanFirm4.setStreet("Servicestraße");
+        craftsmanFirm4.setHouseNumber("15");
+        craftsmanFirm4.setPostalCode("12357");
+        craftsmanFirm4.setCity("Berlin");
+        craftsmanFirm4.setCountry("Deutschland");
+        craftsmanFirm4.setTrades(Set.of(TradeType.HEATING, TradeType.ELECTRICAL));
+        craftsmanFirm4.setIsEmergencyServiceProvider(true);
+        craftsmanFirm4.setAvailabilityHours("Mo-Sa 8:00-20:00");
+        craftsmanFirm4.setServicePostalCodes(Set.of("12357", "12358", "12359"));
+        craftsmanFirm4.setMaxTravelRadiusKm(35);
+        craftsmanFirm4.setStandardHourlyRate(new BigDecimal("90.00"));
+        craftsmanFirm4.setEmergencyHourlyRate(new BigDecimal("160.00")); // Medium price
+        craftsmanFirm4.setTravelCostPerKm(new BigDecimal("0.55"));
+        craftsmanFirm4.setStandardWarrantyMonths(36);
+        craftsmanFirm4 = craftsmanFirmRepository.save(craftsmanFirm4);
+
+        // Framework contract for Company 4
+        FrameworkContract fcontract4 = new FrameworkContract();
+        fcontract4.setCraftsmanFirm(craftsmanFirm4);
+        fcontract4.setLandlord(landlord1);
+        fcontract4.setContractNumber("FC-2024-004");
+        fcontract4.setStartDate(LocalDate.now());
+        fcontract4.setEndDate(LocalDate.now().plusYears(2));
+        fcontract4.setIsActive(true);
+        fcontract4.setNegotiatedHourlyRate(new BigDecimal("85.00"));
+        fcontract4.setNegotiatedEmergencyRate(new BigDecimal("150.00"));
+        fcontract4.setNegotiatedTravelCost(new BigDecimal("0.50"));
+        fcontract4.setDiscountPercentage(new BigDecimal("4.00"));
+        fcontract4.setWarrantyMonths(36);
+        fcontract4.setIban("DE89370400440532013003");
+        fcontract4.setBic("DEUTDEBBXXX");
+        fcontract4.setBankName("Deutsche Bank");
+        fcontract4.setAccountHolder("Premium Service Müller OHG");
+        fcontract4.setPaymentTermDays(30);
+        fcontract4.setAcceptedPaymentMethods(Set.of(PaymentMethod.BANK_TRANSFER, PaymentMethod.INVOICE, PaymentMethod.CASH));
+        fcontract4.setMaxResponseTimeHours(16);
+        fcontract4.setEmergencyResponseTimeMinutes(75);
+        fcontract4.setIncludesWeekendService(false);
+        fcontract4.setServiceHours("Mo-Sa 8:00-20:00");
+        fcontract4.setCoveredTrades(Set.of(TradeType.HEATING, TradeType.ELECTRICAL));
+        fcontract4.setRequiredInsuranceAmount(new BigDecimal("3000000.00"));
+        fcontract4.setInsuranceExpiryDate(LocalDate.now().plusYears(1));
+        fcontract4.setInsurancePolicyNumber("POL-901234");
+        frameworkContractRepository.save(fcontract4);
+
         // Create a ticket for a tenant issue
         Ticket ticket1 = new Ticket();
         ticket1.setDescription("Water leak in the kitchen");
