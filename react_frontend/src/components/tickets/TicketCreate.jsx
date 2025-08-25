@@ -8,14 +8,16 @@ const TicketCreate = () => {
     const [formData, setFormData] = useState({
         description: '',
         tenantId: '',
-        assetId: ''
+        assetId: '',
+        companyId: ''
     });
     const [tenants, setTenants] = useState([]);
     const [assets, setAssets] = useState([]);
+    const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // Fetch tenants and assets for dropdown selection
+    // Fetch tenants, assets, and companies for dropdown selection
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -35,6 +37,29 @@ const TicketCreate = () => {
                 if (assetsResponse.ok) {
                     const assetsData = await assetsResponse.json();
                     setAssets(assetsData._embedded?.realEstateObjects || []);
+                }
+
+                // Fetch companies
+                const companiesResponse = await apiCall(ENDPOINTS.COMPANIES, {
+                    method: 'GET'
+                }, navigate);
+                if (companiesResponse.ok) {
+                    const companiesData = await companiesResponse.json();
+                    setCompanies(companiesData || []);
+                }
+
+                // Fetch cheapest emergency company and set as default
+                const cheapestResponse = await apiCall(ENDPOINTS.COMPANIES_CHEAPEST_EMERGENCY, {
+                    method: 'GET'
+                }, navigate);
+                if (cheapestResponse.ok) {
+                    const cheapestCompany = await cheapestResponse.json();
+                    if (cheapestCompany && cheapestCompany.id) {
+                        setFormData(prev => ({
+                            ...prev,
+                            companyId: cheapestCompany.id.toString()
+                        }));
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -63,7 +88,8 @@ const TicketCreate = () => {
             const ticketData = {
                 description: formData.description,
                 tenant: formData.tenantId ? { id: formData.tenantId } : null,
-                asset: formData.assetId ? { id: formData.assetId } : null
+                asset: formData.assetId ? { id: formData.assetId } : null,
+                craftsmanFirm: formData.companyId ? { id: formData.companyId } : null
             };
 
             const response = await apiCall(ENDPOINTS.TICKETS, {
@@ -162,6 +188,29 @@ const TicketCreate = () => {
                                             </option>
                                         ))}
                                     </select>
+                                </div>
+
+                                <div className="form-group mb-3">
+                                    <label htmlFor="companyId" className="form-label">
+                                        Assigned Company
+                                    </label>
+                                    <select
+                                        id="companyId"
+                                        name="companyId"
+                                        className="form-control"
+                                        value={formData.companyId}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">Select a company (optional)</option>
+                                        {companies.map(company => (
+                                            <option key={company.id} value={company.id}>
+                                                {company.companyName} - {company.emergencyHourlyRate ? `€${company.emergencyHourlyRate}/h emergency` : 'No emergency service'}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <small className="form-text text-muted">
+                                        The cheapest emergency service provider is pre-selected by default.
+                                    </small>
                                 </div>
                             </div>
                             <div className="card-footer">

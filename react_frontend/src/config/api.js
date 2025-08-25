@@ -11,6 +11,7 @@ export const ENDPOINTS = {
     LANDLORDS: `${API_BASE_URL}/api/landlords`,
     CRAFTSMAN_FIRMS: `${API_BASE_URL}/api/craftsman-firms`,
     COMPANIES: `${API_BASE_URL}/api/companies`,
+    COMPANIES_CHEAPEST_EMERGENCY: `${API_BASE_URL}/api/companies/cheapest-emergency`,
     CONTRACTS: `${API_BASE_URL}/api/contracts`,
     PROPERTY_TYPES: `${API_BASE_URL}/api/property-types`,
     CONTRACT_STATUSES: `${API_BASE_URL}/api/contract-statuses`,

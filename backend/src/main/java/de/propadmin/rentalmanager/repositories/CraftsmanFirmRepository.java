@@ -21,4 +21,13 @@ public interface CraftsmanFirmRepository extends JpaRepository<CraftsmanFirm, Lo
            "WHERE fc.landlord.id = :landlordId " +
            "AND fc.isActive = true")
     List<CraftsmanFirm> findActiveByLandlordId(@Param("landlordId") Long landlordId);
+
+    @Query("SELECT c FROM CraftsmanFirm c " +
+           "JOIN c.frameworkContracts fc " +
+           "WHERE fc.landlord.id = :landlordId " +
+           "AND fc.isActive = true " +
+           "AND c.isEmergencyServiceProvider = true " +
+           "AND c.emergencyHourlyRate IS NOT NULL " +
+           "ORDER BY c.emergencyHourlyRate ASC")
+    List<CraftsmanFirm> findCheapestEmergencyCompanyByLandlordId(@Param("landlordId") Long landlordId);
 }

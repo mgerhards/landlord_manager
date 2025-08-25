@@ -22,6 +22,11 @@ public class CraftsmanFirmService {
         return craftsmanFirmRepository.findByLandlordId(landlordId);
     }
 
+    public CraftsmanFirm getCheapestEmergencyCompanyByLandlord(Long landlordId) {
+        List<CraftsmanFirm> companies = craftsmanFirmRepository.findCheapestEmergencyCompanyByLandlordId(landlordId);
+        return companies.isEmpty() ? null : companies.get(0);
+    }
+
     public void deleteCraftsmanFirm(Long id) {
         craftsmanFirmRepository.deleteById(id);
     }
