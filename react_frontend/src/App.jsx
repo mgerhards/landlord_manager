@@ -8,16 +8,15 @@ import RealEstateOverview from './components/RealEstate/Overview.jsx';
 import RealEstateForm from './components/RealEstate/Form.jsx';
 import TennantsOverview from './components/tenants/Overview.jsx';
 import CompaniesOverview from './components/companies/Overview.jsx';
-import CompanyForm from './components/companies/CompanyForm.jsx';
+// import CompanyForm from './components/companies/CompanyForm.jsx';
 import TicketsOverview from './components/tickets/Overview.jsx';
 import TicketCreate from './components/tickets/TicketCreate.jsx';
 import RealEstateDetails from './components/RealEstate/Details.jsx';
-import CompaniesDetails from './components/companies/Details.jsx';
+// import CompaniesDetails from './components/companies/Details.jsx';
+import Home from './components/Home.jsx';
 import Login from './Login.jsx';
 import { isAuthenticated, verifyToken, logout, apiCall } from './config/auth.js';
 import { ENDPOINTS } from './config/api.js';
-
-const Home = () => <h3>Home</h3>;
 
 const App = () => {
   const navigate = useNavigate();
