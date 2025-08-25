@@ -5,7 +5,7 @@ const OpenDetailsButton = ({ obj }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/immobilien/details/${obj.id}`, { state: { realEstateObject: obj } });
+    navigate(`/real-estate/details/${obj.id}`, { state: { realEstateObject: obj } });
   };
 
 

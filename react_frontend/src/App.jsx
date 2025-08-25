@@ -94,7 +94,7 @@ const App = () => {
   useEffect(() => {
     // Only extract ID from detail routes
     const path = window.location.pathname;
-    const detailsMatch = path.match(/\/immobilien\/details\/(\d+)$/);
+    const detailsMatch = path.match(/\/real-estate\/details\/(\d+)$/);
     
     if (detailsMatch && isTokenValid) {
         const id = detailsMatch[1]; // Extract the numeric ID
@@ -149,9 +149,14 @@ const App = () => {
             <Route path="/immobilien" element={<RealEstateOverview />} />
             <Route path="/real-estate" element={<RealEstateOverview />} />
             <Route path="/real-estate/form" element={<RealEstateForm />} />
-            <Route path="/immobilien/details/:id" element={<RealEstateDetails realEstateObject={realEstateObject} />} />
+            <Route path="/real-estate/details/:id" element={<RealEstateDetails realEstateObject={realEstateObject} />} />
+            
             <Route path="/tenants" element={<TennantsOverview />} />
+            
             <Route path="/companies" element={<CompaniesOverview />} />
+            <Route path="/companies/details/:id" element={<CompaniesDetails />} />
+            <Route path="/companies/create" element={<TicketCreate />} />
+            
             <Route path="/tickets" element={<TicketsOverview />} />
             <Route path="/tickets/create" element={<TicketCreate />} />
           </Routes>
