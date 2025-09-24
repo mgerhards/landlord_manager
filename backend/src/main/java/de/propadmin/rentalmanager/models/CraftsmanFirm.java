@@ -75,6 +75,9 @@ public class CraftsmanFirm {
     private LocalDateTime updatedAt;
     private String createdBy;
     private String lastModifiedBy;
+    
+    // Soft delete - null when active, timestamp when deactivated
+    private LocalDateTime deactivated;
 
     @OneToMany(mappedBy = "craftsmanFirm")
     @JsonManagedReference

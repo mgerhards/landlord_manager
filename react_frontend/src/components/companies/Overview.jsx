@@ -10,31 +10,52 @@ const CompaniesOverview = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchCompanies = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-                const response = await apiCall(ENDPOINTS.COMPANIES, {
-                    method: 'GET'
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to fetch companies');
-                }
-                
-                const data = await response.json();
-                setCompanies(data);
-            } catch (error) {
-                console.error('Error fetching companies:', error);
-                setError('Failed to load companies. Please try again.');
-            } finally {
-                setLoading(false);
+    const fetchCompanies = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const response = await apiCall(ENDPOINTS.COMPANIES, {
+                method: 'GET'
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch companies');
             }
-        };
+            
+            const data = await response.json();
+            setCompanies(data);
+        } catch (error) {
+            console.error('Error fetching companies:', error);
+            setError('Failed to load companies. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchCompanies();
     }, [navigate]);
+
+    const handleDelete = async (company) => {
+        if (window.confirm(`Sind Sie sicher, dass Sie die Firma "${company.companyName}" deaktivieren möchten?`)) {
+            try {
+                const response = await apiCall(
+                    `${ENDPOINTS.COMPANIES}/${company.id}`,
+                    { method: 'DELETE' }
+                );
+
+                if (response.ok) {
+                    // Refresh the list
+                    fetchCompanies();
+                } else {
+                    alert('Fehler beim Deaktivieren der Firma');
+                }
+            } catch (error) {
+                console.error('Error deleting company:', error);
+                alert('Fehler beim Deaktivieren der Firma');
+            }
+        }
+    };
 
     const handleCreateCompany = () => {
         navigate('/companies/create');
@@ -118,7 +139,16 @@ const CompaniesOverview = () => {
                                         }
                                     </td>
                                     <td>
-                                        <OpenDetailsButton company={company} />
+                                        <div className="d-flex gap-2">
+                                            <OpenDetailsButton company={company} />
+                                            <button 
+                                                className="btn btn-outline-danger btn-sm"
+                                                onClick={() => handleDelete(company)}
+                                                title="Firma deaktivieren"
+                                            >
+                                                <i className="fas fa-trash"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

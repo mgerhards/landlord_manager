@@ -1,6 +1,8 @@
 package de.propadmin.rentalmanager.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,18 @@ public class CraftsmanFirmService {
     }
 
     public void deleteCraftsmanFirm(Long id) {
-        craftsmanFirmRepository.deleteById(id);
+        Optional<CraftsmanFirm> craftsmanFirm = craftsmanFirmRepository.findById(id);
+        if (craftsmanFirm.isPresent()) {
+            CraftsmanFirm firm = craftsmanFirm.get();
+            // Soft delete: set deactivated timestamp instead of deleting
+            firm.setDeactivated(LocalDateTime.now());
+            craftsmanFirmRepository.save(firm);
+        } else {
+            throw new RuntimeException("CraftsmanFirm not found with id: " + id);
+        }
+    }
+
+    public List<CraftsmanFirm> getAllCraftsmanFirms() {
+        return craftsmanFirmRepository.findAll();
     }
 }
