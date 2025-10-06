@@ -2,8 +2,12 @@ package de.propadmin.rentalmanager.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -92,8 +96,13 @@ public class Contract {
     private String handoverProtocolPath;
     
     // Audit fields
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+    
+    private LocalDateTime deletedAt;
     private String createdBy;
     private String lastModifiedBy;
 
