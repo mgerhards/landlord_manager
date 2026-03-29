@@ -2,9 +2,11 @@ package de.propadmin.rentalmanager.dto;
 
 import de.propadmin.rentalmanager.models.UserAccount;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class AppUserDetailsDTO implements UserDetails {
     private final UserAccount userAccount;
@@ -23,8 +25,10 @@ public class AppUserDetailsDTO implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // You can adapt this to return actual roles/authorities if needed
-        return Collections.emptyList();
+        if (userAccount.getRole() == null) {
+            return Collections.emptyList();
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_" + userAccount.getRole().name()));
     }
 
     @Override

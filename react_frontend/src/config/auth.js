@@ -16,11 +16,26 @@ export const removeToken = () => {
 };
 
 /**
- * Check if user is authenticated (has a token)
+ * Check if user is authenticated (has a valid, non-expired token)
  */
 export const isAuthenticated = () => {
     const token = getToken();
-    return token && token !== 'undefined' && token !== '';
+    if (!token || token === 'undefined' || token === '') {
+        return false;
+    }
+    try {
+        const decoded = jwtDecode(token);
+        const nowInSeconds = Date.now() / 1000;
+        if (decoded.exp && decoded.exp < nowInSeconds) {
+            removeToken();
+            return false;
+        }
+    } catch (e) {
+        // Token nicht dekodierbar – als ungültig behandeln
+        removeToken();
+        return false;
+    }
+    return true;
 };
 
 /**
@@ -167,3 +182,20 @@ export const getUserIdFromToken = () => {
     return null;
   }
 };
+
+/**
+ * Extracts the role from JWT
+ *
+ * @returns {string|null} The role (e.g. "LANDLORD", "TENANT", "CRAFTSMAN") or null if not found
+ */
+export const getRoleFromToken = () => {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const decoded = jwtDecode(token);
+    return decoded.role || null;
+  } catch (e) {
+    return null;
+  }
+};
+

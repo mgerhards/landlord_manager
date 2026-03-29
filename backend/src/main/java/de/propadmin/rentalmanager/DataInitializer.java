@@ -26,6 +26,7 @@ import de.propadmin.rentalmanager.models.enums.PaymentMethod;
 import de.propadmin.rentalmanager.models.enums.PropertyType;
 import de.propadmin.rentalmanager.models.enums.TicketStatus;
 import de.propadmin.rentalmanager.models.enums.TradeType;
+import de.propadmin.rentalmanager.models.enums.UserRole;
 import de.propadmin.rentalmanager.repositories.CraftsmanFirmRepository;
 import de.propadmin.rentalmanager.repositories.FrameworkContractRepository;
 import de.propadmin.rentalmanager.repositories.UserRepository;
@@ -95,7 +96,8 @@ public class DataInitializer implements CommandLineRunner {
         de.propadmin.rentalmanager.models.UserAccount landlordAccount = new de.propadmin.rentalmanager.models.UserAccount();
         landlordAccount.setEmail("info@gendis.de");
         landlordAccount.setPassword(passwordEncoder.encode("password"));
-        landlordAccount = userRepository.save(landlordAccount);     
+        landlordAccount.setRole(UserRole.LANDLORD);
+        landlordAccount = userRepository.save(landlordAccount);
         landlord1.setUserAccount(landlordAccount);
         landlord1.setName("John Doe");
                 
@@ -161,7 +163,8 @@ public class DataInitializer implements CommandLineRunner {
         UserAccount tenantAccount = new UserAccount();
         tenantAccount.setEmail("jane.smith@example.com");
         tenantAccount.setPassword(passwordEncoder.encode("password"));
-        tenantAccount = userRepository.save(tenantAccount); 
+        tenantAccount.setRole(UserRole.TENANT);
+        tenantAccount = userRepository.save(tenantAccount);
 
         tenant1.setUserAccount(tenantAccount);
         tenant1.setName("Jane Smith");
@@ -187,6 +190,7 @@ public class DataInitializer implements CommandLineRunner {
         UserAccount tenant2Account = new UserAccount();
         tenant2Account.setEmail("michael.brown@example.com");
         tenant2Account.setPassword(passwordEncoder.encode("password"));
+        tenant2Account.setRole(UserRole.TENANT);
         tenant2Account = userRepository.save(tenant2Account);
 
         tenant2.setUserAccount(tenant2Account);
@@ -263,7 +267,8 @@ public class DataInitializer implements CommandLineRunner {
         UserAccount contactPersonAccount = new UserAccount();
         contactPersonAccount.setEmail("hans.roehrich@roehrich-gmbh.de");
         contactPersonAccount.setPassword(passwordEncoder.encode("password"));
-        contactPersonAccount = userRepository.save(contactPersonAccount); 
+        contactPersonAccount.setRole(UserRole.CRAFTSMAN);
+        contactPersonAccount = userRepository.save(contactPersonAccount);
         
         contactPerson1.setUserAccount(contactPersonAccount);
         contactPerson1.setName("Hans Röhrich");
@@ -276,6 +281,7 @@ public class DataInitializer implements CommandLineRunner {
         UserAccount contactPerson2Account = new UserAccount();
         contactPerson2Account.setEmail("anna.mueller@roehrich-gmbh.de");
         contactPerson2Account.setPassword(passwordEncoder.encode("password"));
+        contactPerson2Account.setRole(UserRole.CRAFTSMAN);
         contactPerson2.setUserAccount(contactPerson2Account);
         contactPerson2.setName("Anna Müller");
         contactPerson2.setPhoneNumber("+49 30 87654321");
