@@ -1,14 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ENDPOINTS } from '../../config/api';
+import { apiCall } from '../../config/auth';
 
 const CompaniesDetails = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { company } = location.state || {};
 
   if (!company) {
     return <div>Loading...</div>;
   }
+
+  const handleDelete = async () => {
+    if (window.confirm(`Sind Sie sicher, dass Sie die Firma "${company.companyName}" deaktivieren möchten?`)) {
+      try {
+        const response = await apiCall(
+          `${ENDPOINTS.COMPANIES}/${company.id}`,
+          { method: 'DELETE' }
+        );
+
+        if (response.ok) {
+          // Navigate back to companies overview after successful deletion
+          navigate('/companies');
+        } else {
+          alert('Fehler beim Deaktivieren der Firma');
+        }
+      } catch (error) {
+        console.error('Error deleting company:', error);
+        alert('Fehler beim Deaktivieren der Firma');
+      }
+    }
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -30,6 +54,28 @@ const CompaniesDetails = () => {
 
   return (
     <div className="container-fluid">
+      {/* Button Bar */}
+      <div className="row mb-3">
+        <div className="col-12">
+          <div className="d-flex gap-2">
+            <button 
+              className="btn btn-outline-secondary"
+              onClick={() => navigate('/companies')}
+            >
+              <i className="fas fa-arrow-left me-2"></i>
+              Zurück zur Übersicht
+            </button>
+            <button 
+              className="btn btn-outline-danger"
+              onClick={handleDelete}
+            >
+              <i className="fas fa-trash me-2"></i>
+              Firma deaktivieren
+            </button>
+          </div>
+        </div>
+      </div>
+      
       <div className="row">
         {/* Company Details Card */}
         <div className="col-md-6 mb-3">

@@ -13,13 +13,15 @@ import de.propadmin.rentalmanager.models.CraftsmanFirm;
 public interface CraftsmanFirmRepository extends JpaRepository<CraftsmanFirm, Long> {
     @Query("SELECT DISTINCT c FROM CraftsmanFirm c " +
            "JOIN c.frameworkContracts fc " +
-           "WHERE fc.landlord.id = :landlordId")
+           "WHERE fc.landlord.id = :landlordId " +
+           "AND c.deactivated IS NULL")
     List<CraftsmanFirm> findByLandlordId(@Param("landlordId") Long landlordId);
 
     @Query("SELECT c FROM CraftsmanFirm c " +
            "JOIN c.frameworkContracts fc " +
            "WHERE fc.landlord.id = :landlordId " +
-           "AND fc.isActive = true")
+           "AND fc.isActive = true " +
+           "AND c.deactivated IS NULL")
     List<CraftsmanFirm> findActiveByLandlordId(@Param("landlordId") Long landlordId);
 
     @Query("SELECT c FROM CraftsmanFirm c " +
@@ -28,6 +30,11 @@ public interface CraftsmanFirmRepository extends JpaRepository<CraftsmanFirm, Lo
            "AND fc.isActive = true " +
            "AND c.isEmergencyServiceProvider = true " +
            "AND c.emergencyHourlyRate IS NOT NULL " +
+           "AND c.deactivated IS NULL " +
            "ORDER BY c.emergencyHourlyRate ASC")
     List<CraftsmanFirm> findCheapestEmergencyCompanyByLandlordId(@Param("landlordId") Long landlordId);
+
+    // Override findAll to exclude deactivated companies
+    @Query("SELECT c FROM CraftsmanFirm c WHERE c.deactivated IS NULL")
+    List<CraftsmanFirm> findAll();
 }
